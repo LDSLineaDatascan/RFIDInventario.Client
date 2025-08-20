@@ -1,0 +1,99 @@
+<app-breadcrumb></app-breadcrumb>
+<h2 *ngIf="detalle; else sinTitulo">
+  Detalle del Producto: {{ detalle.producto }} - Tienda: {{ detalle.tienda }}
+</h2>
+<ng-template #sinTitulo>
+  <h2>Detalle del Producto - Tienda</h2>
+</ng-template>
+
+<div class="botones-container">
+  <!--<button (click)="volver()" class="btn btn-primary">Volver</button>-->
+  <select class="form-select" (change)="manejarSeleccionTags($event)">
+      <option value="" disabled selected>Consulte tags:</option>
+      <option value="todos">Ver todos los tags</option>
+      <option value="teoricos">Ver tags teóricos</option>
+      <option value="sobrantes">Ver tags sobrantes</option>
+    </select>
+
+  <div class="botones-derecha">
+    
+    <!--<button (click)="ver_tags_teoricos()" class="btn btn-primary">Ver tags teóricos</button>
+    <button (click)="ver_tags_sobrantes()" class="btn btn-primary">Ver tags sobrantes</button>
+    <button (click)="ver_tags()" class="btn btn-primary">Ver todos los tags</button>-->
+
+    <button (click)="reiniciarInventario(detalle)" class="btn btn-primary">
+      Reiniciar Inventario
+    </button>
+    
+    <button class="btn btn-primary" (click)="descargarCSV()">
+      Descargar CSV Detalle
+    </button>
+
+    <!-- Dropdown para selección de tipo de tags -->
+    
+  </div>
+</div>
+
+
+
+
+<table *ngIf="detalle; else sinDatos">
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Producto</th>
+      <th>Categoría</th>
+      <th>Stock Teórico</th>
+      <th>Stock Físico</th>
+      <th>Faltantes</th>
+      <th>Sobrantes</th>
+      <th>Progreso</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ detalle.idProducto }}</td>
+      <td>{{ detalle.producto }}</td>
+      <td>{{ detalle.categoria }}</td>
+      <td>{{ detalle.stockTeorico }}</td>
+      <td>{{ detalle.stockFisico }}</td>
+      <td>{{ detalle.faltantes }}</td>
+      <td>{{ detalle.sobrantes }}</td>
+      <td>
+        <div class="progress-container">
+          <div class="progress-bar" [style.width.%]="progresoLimitado">
+            {{ progresoLimitado | number:'1.0-0' }}%
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h2>{{ tituloTags }}</h2>
+
+<table *ngIf="tags.length > 0; else sinTags">
+  <thead>
+    <tr>
+      <th>Tag</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let tag of tags">
+      <td>{{ tag.tag }}</td>
+      <td>{{ tag.fecha | date: 'short' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #sinTags>
+  <p>No hay tags seleccionados o disponibles</p>
+</ng-template>
+
+
+
+<ng-template #sinDatos>
+  <p>No hay información disponible para este producto en la tienda.</p>
+</ng-template>

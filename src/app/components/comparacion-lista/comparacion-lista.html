@@ -1,0 +1,63 @@
+<h2>Comparación de Conteo - Tienda {{ idTienda }}</h2>
+
+
+<div class="selector-container">
+  <label for="tiendaSelect">Seleccionar tienda:</label>
+  <select id="tiendaSelect" [(ngModel)]="idTienda" (change)="obtenerComparacion()">
+    <option *ngFor="let tienda of tiendas" [value]="tienda.codigo">{{ tienda.nombre }}</option>
+  </select>
+</div>
+
+
+
+  <div class="botones-container">
+  <!-- Botón volver a la izquierda -->
+  <button class="btn-archivo" (click)="volver()">Volver a Conteo</button>
+
+  <!-- Botón CSV a la derecha -->
+  <div class="botones-derecha" *ngIf="comparacion.length > 0">
+    <button class="btn-archivo" (click)="descargarArchivoPlano()">Descargar CSV</button>
+  </div>
+</div>
+
+
+
+
+<!-- Progreso de lectura -->
+<div class="progreso-container" *ngIf="comparacion.length > 0">
+  <label>Progreso de lectura:</label>
+  <div class="barra-progreso">
+    <div class="barra-relleno" [style.width.%]="progresoLectura">{{ progresoLectura }}%</div>
+  </div>
+</div>
+
+
+
+<table *ngIf="comparacion.length > 0; else sinDatos">
+  <thead>
+    <tr>
+      <th>ID Producto</th>
+      <th>Producto</th>
+      <th>Categoría</th>
+      <th>Stock Teórico</th>
+      <th>Stock Físico</th>
+      <th>Diferencia</th>
+      <th>Estado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of comparacion">
+      <td>{{ item.idProducto }}</td>
+      <td>{{ item.nombre }}</td>
+      <td>{{ item.categoria }}</td>
+      <td>{{ item.stockTeorico }}</td>
+      <td>{{ item.stockFisico }}</td>
+      <td>{{ item.diferencia }}</td>
+      <td>{{ item.estado }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #sinDatos>
+  <p>No hay datos de comparación para esta tienda.</p>
+</ng-template>

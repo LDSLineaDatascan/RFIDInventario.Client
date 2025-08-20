@@ -1,0 +1,35 @@
+<h2>Inventario Físico - Tienda {{ idTienda }}</h2>
+
+<div class="selector-container">
+  <label for="tiendaSelect">Seleccionar tienda:</label>
+  <select id="tiendaSelect" [(ngModel)]="idTienda" (change)="obtenerInventario()">
+    <option *ngFor="let tienda of tiendas" [value]="tienda.codigo">{{ tienda.nombre }}</option>
+  </select>
+</div>
+
+<div class="boton-descarga-container">
+  <button class="btn btn-primary mb-3" (click)="descargarCSV()">Descargar CSV</button>
+</div>
+
+<table *ngIf="inventario.length > 0; else sinDatos">
+  <thead>
+    <tr>
+      <th>Tienda</th>
+      <th>Producto</th>
+      <th>Categoría</th>
+      <th>Stock Físico</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of inventario">
+      <td>{{ item.tienda }}</td>
+      <td>{{ item.producto }}</td>
+      <td>{{ item.categoria }}</td>
+      <td>{{ item.cantidadLectura }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #sinDatos>
+  <p>No hay datos de inventario físico para esta tienda.</p>
+</ng-template>

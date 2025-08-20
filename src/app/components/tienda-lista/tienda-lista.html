@@ -1,0 +1,22 @@
+<h2>Lista de Tiendas</h2>
+
+<table *ngIf="tiendas.length > 0; else sinDatos">
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Nombre</th>
+      <!--<th>ESTADO</th>-->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let tienda of tiendas">
+      <td>{{ tienda.codigo }}</td>
+      <td>{{ tienda.nombre }}</td>
+      <!--<td>{{ tienda.estado }}</td>-->
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #sinDatos>
+  <p>No hay tiendas disponibles.</p>
+</ng-template>

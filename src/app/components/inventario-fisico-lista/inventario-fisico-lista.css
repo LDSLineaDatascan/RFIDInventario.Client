@@ -1,0 +1,119 @@
+/* ------------------------
+   TÍTULO
+------------------------ */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ------------------------
+   TABLA
+------------------------ */
+table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  background-color: #AAD63E;
+  color: white;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #e0e0e0;
+  transition: background-color 0.3s;
+}
+
+/* ------------------------
+   TEXTO ALTERNATIVO
+------------------------ */
+p {
+  text-align: center;
+  font-style: italic;
+  color: #999;
+}
+
+/* ------------------------
+   SELECTOR DE TIENDAS
+------------------------ */
+.selector-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.selector-container label {
+  margin-right: 10px;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.selector-container select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fdfdfd;
+  font-size: 1rem;
+  color: #2c3e50;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.selector-container select:focus {
+  outline: none;
+  border-color: #AAD63E;
+  box-shadow: 0 0 5px rgba(170, 214, 62, 0.5);
+  background-color: #fff;
+}
+
+
+.boton-descarga-container {
+  width: 80%;        /* igual al ancho de la tabla */
+  margin: 0 auto;    /* centra el contenedor en la página */
+  display: flex;
+  justify-content: flex-end; /* alinea el botón al extremo derecho */
+  margin-bottom: 15px;
+}
+
+.boton-descarga-container button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #c9c9c9;
+  color: white;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-descarga-container button:hover {
+  background-color: #92bc33;
+}
+
+

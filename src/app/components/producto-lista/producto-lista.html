@@ -1,0 +1,22 @@
+<h2>Lista de Productos</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Nombre</th>
+      <th>Categoría</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let producto of productos">
+      <td>{{ producto.codigo }}</td>
+      <td>{{ producto.nombre }}</td>
+      <td>{{ producto.categoria }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="error" style="color: red;">
+  {{ error }}
+</div>

@@ -1,0 +1,14 @@
+.breadcrumb-container {
+  margin: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.breadcrumb-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.breadcrumb-current {
+  color: #555;
+}

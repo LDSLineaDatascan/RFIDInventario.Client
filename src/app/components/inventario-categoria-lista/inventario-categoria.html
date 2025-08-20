@@ -1,0 +1,70 @@
+
+
+<h2>Conteo por Categoría - Tienda: {{ idTienda }}</h2>
+<!--<div class="ultima-actualizacion">
+  Última actualización: {{ ultimaActualizacion | date:'dd/MM/yyyy HH:mm:ss' }}
+</div>-->
+
+
+<div class="selector-container">
+  <label for="tiendaSelect">Seleccionar tienda:</label>
+  <select id="tiendaSelect" [(ngModel)]="idTienda" (change)="obtenerResumen()">
+  <option *ngFor="let tienda of tiendas" [value]="tienda.codigo">{{ tienda.nombre }}</option>
+</select>
+</div>
+
+
+
+<div class="boton-descarga-container">
+  <button class="btn btn-warning mb-3" (click)="irAComparacion()">Ver comparación</button>
+  <button class="btn btn-danger" (click)="reiniciarInventario()">Reiniciar conteo</button>
+  <!--<button class="btn btn-success mb-3" (click)="cargarInventarioTeorico()">Cargar inventario teórico</button>-->
+  <button class="btn btn-primary mb-3" (click)="descargarCSV()">Descargar CSV</button>
+</div>
+
+<!-- Barra de progreso general -->
+<div class="progreso-general-container" *ngIf="resumenCategorias.length > 0">
+  <p>Progreso de lectura: </p>
+  <div class="progress-container">
+    <div class="progress-bar" [style.width.%]="progresoGeneral">{{ progresoGeneral }}%</div>
+  </div>
+</div>
+
+
+<table *ngIf="resumenCategorias.length > 0; else sinDatos">
+
+  <thead>
+    <tr>
+      <th>Categoría</th>
+      <th>Stock Teórico</th>
+      <th>Stock Físico</th>
+      <th>Faltantes</th>
+      <th>Sobrantes</th>
+      <th>Adicionales</th>
+      <th>Progreso</th>
+      <th>Detalle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cat of resumenCategorias">
+      <td>{{ cat.categoria }}</td>
+      <td>{{ cat.teorico }}</td>
+      <td>{{ cat.fisico }}</td>
+      <td>{{ cat.faltantes }}</td>
+      <td>{{ cat.sobrantes }}</td>
+      <td>{{ cat.adicionales }}</td>
+      <td>
+        <div class="progress-container">
+          <div class="progress-bar" [style.width.%]="cat.progreso">{{ cat.progreso }}%</div>
+        </div>
+      </td>
+      <td>
+        <button (click)="verDetalle(cat.categoria)">Ver</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #sinDatos>
+  <p>No hay datos disponibles por categoría para esta tienda.</p>
+</ng-template>

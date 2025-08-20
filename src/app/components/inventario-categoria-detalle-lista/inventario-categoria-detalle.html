@@ -1,0 +1,62 @@
+<app-breadcrumb></app-breadcrumb>
+
+<h2>Productos de la Categoría: {{ categoria }} - Tienda: {{ idTienda }}</h2>
+
+
+<div class="botones-container">
+  <!--<button (click)="volver()" class="btn btn-primary">Volver</button>-->
+  <div style="width: 100px;"></div>
+  
+  <div class="botones-derecha">
+    <button class="btn btn-danger" (click)="reiniciarInventarioCategoria()">
+      Reiniciar inventario de: {{ categoria }}
+    </button>
+    <button class="btn btn-primary" (click)="descargarCSVDetalle()">
+      Descargar CSV Detalle
+    </button>
+  </div>
+</div>
+
+
+<table *ngIf="productos.length > 0; else sinDatos">
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Producto</th>
+      <th>Categoría</th>
+      <th>Stock Teórico</th>
+      <th>Stock Físico</th>
+      <th>Faltantes</th>
+      <th>Sobrantes</th>
+      <th>Progreso</th>
+      <th>Detalle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of productos">
+      <td>{{ p.idProducto }}</td>
+      <td>{{ p.producto }}</td>
+      <td>{{ p.categoria }}</td>
+      <td>{{ p.stockTeorico }}</td>
+      <td>{{ p.stockFisico }}</td>
+      <td>{{ p.stockTeorico > p.stockFisico ? (p.stockTeorico - p.stockFisico) : 0 }}</td>
+      <td>{{ p.stockFisico > p.stockTeorico ? (p.stockFisico - p.stockTeorico) : 0 }}</td>
+      <td>
+        <div class="progress-container">
+          <div 
+            class="progress-bar" 
+            [style.width.%]="getPorcentaje(p.stockFisico, p.stockTeorico)">
+            {{ getPorcentaje(p.stockFisico, p.stockTeorico) | number:'1.0-0' }}%
+          </div>
+        </div>
+      </td>
+      <td>
+        <button (click)="verDetalleProducto(p.idProducto)">Ver</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #sinDatos>
+  <p>No hay productos disponibles para esta categoría en la tienda.</p>
+</ng-template>

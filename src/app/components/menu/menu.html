@@ -1,0 +1,18 @@
+<nav class="navbar">
+  <!--<a routerLink="/" routerLinkActive="active">Inicio</a>-->
+  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+  <a routerLink="/tiendas" routerLinkActive="active">Tiendas</a>
+  <a routerLink="/productos" routerLinkActive="active">Productos</a>
+  <a routerLink="/tags" routerLinkActive="active">Tags</a>
+  <a routerLink="/inventario/categorias" routerLinkActive="active">Conteo</a>
+
+  <!--<div class="dropdown">
+    <button class="dropbtn">Inventario ▾</button>
+    <div class="dropdown-content">
+      <a routerLink="/inventario-teorico" routerLinkActive="active">Teórico</a>
+      <a routerLink="/inventario-fisico" routerLinkActive="active">Físico</a>
+      <a routerLink="/comparacion" routerLinkActive="active">Comparación</a>
+       <a routerLink="/inventario/categorias" routerLinkActive="active">Categorías</a>
+    </div>
+  </div>-->
+</nav>
