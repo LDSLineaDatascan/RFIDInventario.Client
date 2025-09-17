@@ -46,7 +46,8 @@ export class InventarioCategoriaApi {
           resumen.teorico += producto.stockTeorico;
 
           // Stock físico limitado al stock teórico de cada producto
-          resumen.fisico += Math.min(producto.stockFisico, producto.stockTeorico);
+          //resumen.fisico += Math.min(producto.stockFisico, producto.stockTeorico);
+          resumen.fisico += producto.stockFisico;
 
           // Faltantes
           if (producto.stockTeorico > producto.stockFisico) {
@@ -71,7 +72,7 @@ export class InventarioCategoriaApi {
         for (const resumen of resumenMap.values()) {
           resumen.progreso = resumen.teorico === 0
             ? 0
-            : Math.round((resumen.fisico / resumen.teorico) * 100);
+            : Math.min(100,Math.round((resumen.fisico / resumen.teorico) * 100));
         }
 
         subscriber.next(Array.from(resumenMap.values()));
@@ -80,7 +81,9 @@ export class InventarioCategoriaApi {
     });
   }
 
+  //private apiUrl = 'http://localhost:5097/Inventario';
   private apiUrl = 'http://localhost:5097/Inventario';
+
 
   cargarInventarioTeorico() {
   //return this.http.post('/inventario/cargarTeorico', {});
@@ -105,9 +108,5 @@ export class InventarioCategoriaApi {
 reiniciarInventario(idTienda: string): Observable<any> {
   return this.http.post(`${this.apiUrl}/reiniciar`, { idTienda });
 }
-
-
-
-
 
 }

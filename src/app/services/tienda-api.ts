@@ -12,8 +12,8 @@ export interface Tienda{
 @Injectable({ providedIn: 'root' })
 export class TiendaApi {
   //private baseUrl = 'https://localhost:7293';
+  //private baseUrl = 'http://localhost:5097';
   private baseUrl = 'http://localhost:5097';
-
 
   constructor(private http: HttpClient) {}  
 
