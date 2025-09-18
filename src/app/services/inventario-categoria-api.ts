@@ -13,6 +13,7 @@ export interface ResumenCategoria {
   adicionales: number;
   progreso: number;
   productos: ComparacionInventario[];
+  
 }
 
 @Injectable({ providedIn: 'root' })
@@ -20,7 +21,7 @@ export class InventarioCategoriaApi {
   constructor(private comparacionApi: ComparacionApi, private http: HttpClient) {}
   
 
-  obtenerResumenPorCategoria(idTienda: string): Observable<ResumenCategoria[]> {
+  /*obtenerResumenPorCategoria(idTienda: string): Observable<ResumenCategoria[]> {
     return new Observable(subscriber => {
       this.comparacionApi.obtenerComparacionPorTienda(idTienda).subscribe(productos => {
         const resumenMap = new Map<string, ResumenCategoria>();
@@ -46,8 +47,8 @@ export class InventarioCategoriaApi {
           resumen.teorico += producto.stockTeorico;
 
           // Stock físico limitado al stock teórico de cada producto
-          //resumen.fisico += Math.min(producto.stockFisico, producto.stockTeorico);
-          resumen.fisico += producto.stockFisico;
+          resumen.fisico += Math.min(producto.stockFisico, producto.stockTeorico);
+          //resumen.fisico += producto.stockFisico;
 
           // Faltantes
           if (producto.stockTeorico > producto.stockFisico) {
@@ -58,7 +59,7 @@ export class InventarioCategoriaApi {
           /*if(producto.stockFisico > producto.stockTeorico) {
             resumen.sobrantes += producto.stockFisico - producto.stockTeorico;
           }*/
-          if(producto.stockTeorico > 0 && producto.stockFisico > producto.stockTeorico) {
+     /*     if(producto.stockTeorico > 0 && producto.stockFisico > producto.stockTeorico) {
             resumen.sobrantes += producto.stockFisico - producto.stockTeorico;}
 
           //Adiconales
@@ -79,7 +80,71 @@ export class InventarioCategoriaApi {
         subscriber.complete();
       });
     });
-  }
+  }*/
+
+    obtenerResumenPorCategoria(idTienda: string): Observable<ResumenCategoria[]> {
+  return new Observable(subscriber => {
+    this.comparacionApi.obtenerComparacionPorTienda(idTienda).subscribe(productos => {
+      const resumenMap = new Map<string, ResumenCategoria>();
+
+      for (const producto of productos) {
+        const cat = producto.categoria;
+        if (!resumenMap.has(cat)) {
+          resumenMap.set(cat, {
+            categoria: cat,
+            teorico: 0,
+            fisico: 0,
+            faltantes: 0,
+            sobrantes: 0,
+            adicionales: 0,
+            progreso: 0,
+            productos: [],
+          });
+        }
+
+        const resumen = resumenMap.get(cat)!;
+
+        // Stock teórico acumulado
+        resumen.teorico += producto.stockTeorico;
+
+        // Stock físico real (se muestra todo lo leído)
+        resumen.fisico += producto.stockFisico;
+
+        // Faltantes
+        if (producto.stockTeorico > producto.stockFisico) {
+          resumen.faltantes += producto.stockTeorico - producto.stockFisico;
+        }
+
+        // Sobrantes
+        if (producto.stockTeorico > 0 && producto.stockFisico > producto.stockTeorico) {
+          resumen.sobrantes += producto.stockFisico - producto.stockTeorico;
+        }
+
+        // Adicionales
+        if (producto.stockTeorico === 0 && producto.stockFisico > 0) {
+          resumen.adicionales += producto.stockFisico;
+        }
+
+        resumen.productos.push(producto);
+      }
+
+      // Calcular progreso usando físico limitado al teórico
+      for (const resumen of resumenMap.values()) {
+        const fisicoLimitado = resumen.productos
+          .map(p => Math.min(p.stockFisico, p.stockTeorico))
+          .reduce((acc, val) => acc + val, 0);
+
+        resumen.progreso = resumen.teorico === 0
+          ? 0
+          : Math.min(100, Math.round((fisicoLimitado / resumen.teorico) * 100));
+      }
+
+      subscriber.next(Array.from(resumenMap.values()));
+      subscriber.complete();
+    });
+  });
+}
+
 
   //private apiUrl = 'http://localhost:5097/Inventario';
   private apiUrl = 'http://localhost:5097/Inventario';

@@ -211,7 +211,7 @@ cargarInventarioTeorico(): void {
   });
 }
 
-calcularProgresoGeneral(): void {
+/*calcularProgresoGeneral(): void {
   const teoricoFiltrado = this.resumenCategorias.filter(item => item.teorico > 0);
   const totalTeorico = teoricoFiltrado.reduce((sum, item) => sum + item.teorico, 0);
   const totalFisico = teoricoFiltrado.reduce((sum, item) => sum + Math.min(item.fisico, item.teorico), 0);
@@ -221,7 +221,27 @@ calcularProgresoGeneral(): void {
   } else {
     this.progresoGeneral = Math.min(100, Math.round((totalFisico / totalTeorico) * 100));
   }
+}*/
+
+calcularProgresoGeneral(): void {
+  const teoricoFiltrado = this.resumenCategorias.filter(item => item.teorico > 0);
+  const totalTeorico = teoricoFiltrado.reduce((sum, item) => sum + item.teorico, 0);
+
+  // Acumular el físico limitado (igual que en categorías)
+  const totalFisicoLimitado = teoricoFiltrado.reduce((sum, item) => {
+    const fisicoLimitado = item.productos
+      .map(p => Math.min(p.stockFisico, p.stockTeorico))
+      .reduce((acc, val) => acc + val, 0);
+    return sum + fisicoLimitado;
+  }, 0);
+
+  if (totalTeorico === 0) {
+    this.progresoGeneral = 0;
+  } else {
+    this.progresoGeneral = Math.min(100, Math.round((totalFisicoLimitado / totalTeorico) * 100));
+  }
 }
+
 
 
 /*reiniciarInventario() {
@@ -256,8 +276,5 @@ irAComparacion(): void {
 
   this.router.navigate(['/comparacion'], { queryParams: { idTienda: this.idTienda } });
 }
-
-
-
 
 }
