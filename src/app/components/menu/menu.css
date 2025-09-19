@@ -38,6 +38,43 @@
 }
 
 
+/* Media queries para pantallas más pequeñas */
+@media screen and (max-width: 1024px) {
+  .navbar {
+    padding: 8px 15px;
+  }
+
+  .logo img {
+    width: 150px; /* logo más pequeño en tablet */
+  }
+
+  .menu-links {
+    gap: 15px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: column; /* verticaliza navbar en móviles */
+    align-items: flex-start;
+    padding: 8px 10px;
+  }
+
+  .menu-links {
+    flex-direction: column; /* links verticales */
+    gap: 10px;
+    width: 100%;
+  }
+
+  .logo img {
+    width: 120px; /* logo más pequeño en móviles */
+    margin-bottom: 10px;
+  }
+}
+
+/***********************************************************************/
+
+
 .dropdown {
   position: relative;
   display: inline-block;
