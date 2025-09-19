@@ -82,7 +82,7 @@ export class InventarioCategoriaApi {
     });
   }*/
 
-    obtenerResumenPorCategoria(idTienda: string): Observable<ResumenCategoria[]> {
+  obtenerResumenPorCategoria(idTienda: string): Observable<ResumenCategoria[]> {
   return new Observable(subscriber => {
     this.comparacionApi.obtenerComparacionPorTienda(idTienda).subscribe(productos => {
       const resumenMap = new Map<string, ResumenCategoria>();
