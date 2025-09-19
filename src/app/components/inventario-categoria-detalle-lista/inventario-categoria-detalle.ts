@@ -26,7 +26,6 @@ export class InventarioCategoriaDetalleComponent implements OnInit {
   { label: this.categoria, link: ['/inventario', 'categorias', this.categoria] }
   ];
 
-
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -56,36 +55,43 @@ export class InventarioCategoriaDetalleComponent implements OnInit {
   this.idTienda = this.route.snapshot.paramMap.get('idTienda')!;
   this.categoria = this.route.snapshot.paramMap.get('categoria')!;
 
-  //  Guardar categoría en sessionStorage
+  console.log(">>> CategoriaDetalle cargado");
+  console.log("   idTienda:", this.idTienda);
+  console.log("   categoria:", this.categoria);
+
+  // Guardar categoría en sessionStorage
   if (this.categoria) {
     sessionStorage.setItem('categoriaSeleccionada', this.categoria);
   }
 
+  // 🔑 construir rutas como STRING, no array
   this.rutas = [
-    { label: 'Categorías', link: ['/categorias'] },
-    { label: this.categoria, link: ['/categorias', this.categoria] }
-  ];
-  
+  { label: 'Categorías', link: ['/', 'inventario', 'categorias', this.idTienda] },
+  { label: this.categoria, link: ['/', 'inventario-categoria-detalle', this.idTienda, this.categoria] }
+];
+
+  console.log(">>> Breadcrumb rutas construidas:", this.rutas);
+
   this.detalleApi.obtenerProductosPorCategoria(this.idTienda, this.categoria)
     .subscribe(data => {
       this.productos = data;
       console.log('Productos por categoría:', data);
     });
 
-    this.signalRService.onCategoriaReinicio = (categoriaReiniciada) => {
+  this.signalRService.onCategoriaReinicio = (categoriaReiniciada) => {
     if (categoriaReiniciada === this.categoria) {
       console.log('Categoría reiniciada desde SignalR:', categoriaReiniciada);
       this.detalleApi.obtenerProductosPorCategoria(this.idTienda, this.categoria)
         .subscribe(data => this.productos = data);
-      }
-    };
+    }
+  };
 
-    //actualizacion
-    this.signalRService.onActualizarDatos = () => {
+  this.signalRService.onActualizarDatos = () => {
     console.log("Actualizando datos de comparación...");
-    this.cargarProductos();  // <--- Método que refresca los datos
+    this.cargarProductos();
   };
 }
+
 
 
   volver(): void {

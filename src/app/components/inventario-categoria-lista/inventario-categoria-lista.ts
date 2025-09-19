@@ -85,11 +85,20 @@ export class InventarioCategoriasComponent implements OnInit {
 }*/
 
 ngOnInit(): void {
-  // 1. Leer idTienda desde la URL (queryParams)
+  // 1. Leer idTienda desde la URL (queryParams o paramMap)
   this.route.queryParams.subscribe(params => {
     const tiendaParam = params['idTienda'];
     if (tiendaParam) {
       this.idTienda = tiendaParam;
+      console.log('🔹 idTienda desde queryParams:', this.idTienda);
+    }
+  });
+
+  this.route.paramMap.subscribe(params => { // 👈 añadido
+    const tiendaParam = params.get('idTienda');
+    if (tiendaParam) {
+      this.idTienda = tiendaParam;
+      console.log('🔹 idTienda desde paramMap:', this.idTienda);
     }
   });
 
@@ -103,7 +112,7 @@ ngOnInit(): void {
         this.idTienda = this.tiendas[0].codigo;
       }
 
-      console.log('Tienda seleccionada:', this.idTienda);
+      console.log('✅ Tienda seleccionada final:', this.idTienda);
       this.obtenerResumen();
 
       // 3. Iniciar conexión SignalR solo una vez
@@ -128,11 +137,10 @@ ngOnInit(): void {
         console.log('🔄 Actualizando datos desde SignalR');
         this.obtenerResumen();
       };
-
-      
     }
   });
 }
+
 
   obtenerResumen(): void {
     this.categoriaApi.obtenerResumenPorCategoria(this.idTienda).subscribe(resumen => {
@@ -151,13 +159,8 @@ ngOnInit(): void {
   }
 
   verDetalle(categoria: string): void {
-    //this.categoriaSeleccionada = categoria;
-    //const seleccionado = this.resumenCategorias.find(r => r.categoria === categoria);
-    //this.detalleCategoria = seleccionado ? seleccionado.productos : [];
     //botn funcional ok
     this.router.navigate(['/inventario-categoria-detalle', this.idTienda, categoria]);
-    //this.router.navigate(['/inventario/categoria', this.idTienda, categoria]);
-    //this.router.navigate(['/inventario/categorias/detalle', this.idTienda, categoria]);
   }
 
   descargarCSV(): void {

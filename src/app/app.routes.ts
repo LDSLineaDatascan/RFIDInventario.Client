@@ -33,15 +33,37 @@ export const routes: Routes = [
   
   //
   //{ path: 'inventario/categorias',loadComponent: () => import('./components/inventario-categoria-lista/inventario-categoria-lista').then(m => m.InventarioCategoriasComponent)},
-  {
+  //bread inical para categoria
+  /*{
   path: 'inventario/categorias',
   loadComponent: () => import('./components/inventario-categoria-lista/inventario-categoria-lista').then(m => m.InventarioCategoriasComponent),
   data: { breadcrumb: 'Categorías' }
-  },
+  },*/
+
+  {
+  path: 'inventario/categorias',
+  loadComponent: () => import('./components/inventario-categoria-lista/inventario-categoria-lista')
+    .then(m => {
+      console.log("Ruta cargada: inventario/categorias SIN idTienda");
+      return m.InventarioCategoriasComponent;
+    }),
+  data: { breadcrumb: 'Categorías' }
+},
+
+  //RUTA PARA SOSTENER IDTEINDA
+  {
+  path: 'inventario/categorias/:idTienda',
+  loadComponent: () => import('./components/inventario-categoria-lista/inventario-categoria-lista')
+    .then(m => {
+      console.log("Ruta cargada: inventario/categorias CON idTienda");
+      return m.InventarioCategoriasComponent;
+    }),
+  data: { breadcrumb: 'Categorías' }
+},
 
   { path: 'inventario-categoria/:idTienda/:categoria', component: InventarioCategoriaDetalleComponent},
   
-  //
+  //ruta para categoria detalle
   { path: 'inventario-categoria-detalle/:idTienda/:categoria', component: InventarioCategoriaDetalleComponent ,
     data: { breadcrumb: 'Detalle de Categoría' }
   }, 
@@ -49,6 +71,7 @@ export const routes: Routes = [
   
   //
   //{ path: 'producto-detalle/:idTienda/:idProducto', component: InventarioProductoDetalleComponent },
+  //breadcrumb para producto detalle
   {
   path: 'producto-detalle/:idTienda/:idProducto',
   component: InventarioProductoDetalleComponent,

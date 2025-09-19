@@ -20,56 +20,39 @@ export class BreadcrumbComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
-/*  ngOnInit(): void {
+  ngOnInit(): void {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.breadcrumbs = this.buildBreadcrumbs(this.route.root);
+      .subscribe((event: NavigationEnd) => {
+        const path = event.urlAfterRedirects || event.url;
+        console.log('🔁 Breadcrumb navigation to:', path);
+        const built = this.buildManualBreadcrumb(path);
+        console.log('🔹 Breadcrumbs built:', JSON.stringify(built));
+        this.breadcrumbs = built;
       });
-  }*/
-
-  ngOnInit(): void {
-  this.router.events
-    .pipe(filter(event => event instanceof NavigationEnd))
-    .subscribe((event: NavigationEnd) => {
-      const path = event.urlAfterRedirects || event.url;
-      this.breadcrumbs = this.buildManualBreadcrumb(path);
-    });
-}
-
-  private buildBreadcrumbs(
-  route: ActivatedRoute,
-  url: string = '',
-  breadcrumbs: Breadcrumb[] = []
-): Breadcrumb[] {
-  const children: ActivatedRoute[] = route.children;
-
-  /*if (children.length === 0) {
-    return breadcrumbs;
-  }*/
-
-  for (let child of children) {
-    const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
-    if (routeURL !== '') {
-      url += `/${routeURL}`;
-      //const label = child.snapshot.data['breadcrumb'] || routeURL;
-      const label = child.snapshot.data?.['breadcrumb'] ?? this.formatLabelFromUrlSegment(routeURL);
-
-      breadcrumbs.push({ label, url });
-    }
-
-    //  CORREGIDO: continuar con todos los hijos recursivamente
-    //return this.buildBreadcrumbs(child, url, breadcrumbs);
-    this.buildBreadcrumbs(child, url, breadcrumbs);
   }
 
-  return breadcrumbs;
-}
+  private buildBreadcrumbs(
+    route: ActivatedRoute,
+    url: string = '',
+    breadcrumbs: Breadcrumb[] = []
+  ): Breadcrumb[] {
+    const children: ActivatedRoute[] = route.children;
 
+    for (let child of children) {
+      const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
+      if (routeURL !== '') {
+        url += `/${routeURL}`;
+        const label = child.snapshot.data?.['breadcrumb'] ?? this.formatLabelFromUrlSegment(routeURL);
+        breadcrumbs.push({ label, url });
+      }
+      this.buildBreadcrumbs(child, url, breadcrumbs);
+    }
 
+    return breadcrumbs;
+  }
 
-private formatLabel(routeURL: string, params: Params): string {
-    // Personalizar etiquetas si no se usa data.breadcrumb
+  private formatLabel(routeURL: string, params: Params): string {
     if (routeURL.includes('inventario-categoria')) return 'Detalle de Categoría';
     if (routeURL.includes('producto-detalle')) return 'Producto Detalle';
     if (routeURL.includes('inventario/categorias')) return 'Categorías';
@@ -82,60 +65,80 @@ private formatLabel(routeURL: string, params: Params): string {
   }
 
   private formatLabelFromUrlSegment(segment: string): string {
-  // Opcional: puedes usar lógica más avanzada si quieres.
-  return decodeURIComponent(segment.replace(/-/g, ' '));
-}
-
-
-buildManualBreadcrumb(path: string): Breadcrumb[] {
-  const segments = path.split('/').filter(Boolean); // Elimina vacíos
-  const crumbs: Breadcrumb[] = [];
-
-  if (segments[0] === 'inventario' && segments[1] === 'categorias') {
-    crumbs.push({ label: 'Categorías', url: '/inventario/categorias' });
+    return decodeURIComponent(segment.replace(/-/g, ' '));
   }
 
-  if (segments[0] === 'inventario-categoria-detalle') {
-    crumbs.push({ label: 'Categorías', url: '/inventario/categorias' });
-    crumbs.push({
-      label: 'Detalle de Categoría',
-      url: `/inventario-categoria-detalle/${segments[1]}/${segments[2]}`,
-    });
+  // --- AQUI: reemplazo completo de buildManualBreadcrumb con comportamiento determinista ---
+  buildManualBreadcrumb(path: string): Breadcrumb[] {
+    const segments = path.split('/').filter(Boolean); // Elimina vacíos
+    const crumbs: Breadcrumb[] = [];
+
+    // 1) /inventario/categorias  OR  /inventario/categorias/:idTienda
+    if (segments[0] === 'inventario' && segments[1] === 'categorias') {
+      // si existe tercer segmento, lo usamos como idTienda
+      if (segments.length >= 3 && segments[2]) {
+        crumbs.push({ label: 'Categorías', url: `/inventario/categorias/${segments[2]}` });
+      } else {
+        crumbs.push({ label: 'Categorías', url: '/inventario/categorias' });
+      }
+      return crumbs;
+    }
+
+    // 2) /inventario-categoria-detalle/:idTienda/:categoria
+    if (segments[0] === 'inventario-categoria-detalle') {
+      const idTienda = segments[1] || '';
+      const categoria = segments[2] || '';
+      if (idTienda) {
+        crumbs.push({ label: 'Categorías', url: `/inventario/categorias/${idTienda}` });
+      } else {
+        crumbs.push({ label: 'Categorías', url: '/inventario/categorias' });
+      }
+      crumbs.push({
+        label: 'Detalle de Categoría',
+        url: `/inventario-categoria-detalle/${idTienda}/${categoria}`,
+      });
+      return crumbs;
+    }
+
+    // 3) /producto-detalle/:idTienda/:idProducto
+    if (segments[0] === 'producto-detalle') {
+      const idTienda = segments[1] || '';
+      const idProducto = segments[2] || '';
+      const categoria = sessionStorage.getItem('categoriaSeleccionada') || '';
+
+      if (idTienda) {
+        crumbs.push({ label: 'Categorías', url: `/inventario/categorias/${idTienda}` });
+      } else {
+        crumbs.push({ label: 'Categorías', url: '/inventario/categorias' });
+      }
+
+      if (categoria) {
+        crumbs.push({
+          label: 'Detalle de Categoría',
+          url: `/inventario-categoria-detalle/${idTienda}/${categoria}`,
+        });
+      } else {
+        // si no hay categoria en session, aún agregamos el detalle con segmento vacío (opcional)
+        crumbs.push({
+          label: 'Detalle de Categoría',
+          url: `/inventario-categoria-detalle/${idTienda}/`,
+        });
+      }
+
+      crumbs.push({
+        label: 'Producto Detalle',
+        url: `/producto-detalle/${idTienda}/${idProducto}`,
+      });
+
+      return crumbs;
+    }
+
+    // 4) Fallback: construir crumbs simples a partir de la URL en caso no coincida con los patrones anteriores
+    let accumulated = '';
+    for (let i = 0; i < segments.length; i++) {
+      accumulated += `/${segments[i]}`;
+      crumbs.push({ label: this.formatLabelFromUrlSegment(segments[i]), url: accumulated });
+    }
+    return crumbs;
   }
-
-  /*if (segments[0] === 'producto-detalle') {
-    crumbs.push({ label: 'Categorías', url: '/inventario/categorias' });
-    crumbs.push({
-      label: 'Detalle de Categoría',
-      url: `/inventario-categoria-detalle/${segments[1]}/`,//
-    });
-    crumbs.push({
-      label: 'Producto Detalle',
-      url: `/producto-detalle/${segments[1]}/${segments[2]}`,
-    });
-  }*/
-
-  if (segments[0] === 'producto-detalle') {
-  const idTienda = segments[1];
-  const idProducto = segments[2];
-  const categoria = sessionStorage.getItem('categoriaSeleccionada') || '';
-
-  crumbs.push({ label: 'Categorías', url: '/inventario/categorias' });
-  crumbs.push({
-    label: 'Detalle de Categoría',
-    url: `/inventario-categoria-detalle/${idTienda}/${categoria}`,
-  });
-  crumbs.push({
-    label: 'Producto Detalle',
-    url: `/producto-detalle/${idTienda}/${idProducto}`,
-  });
-}
-
-
-  return crumbs;
-}
-
-    
-   
-
 }
