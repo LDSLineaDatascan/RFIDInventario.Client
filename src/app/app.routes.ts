@@ -20,10 +20,12 @@ import { ComparacionLista } from './components/comparacion-lista/comparacion-lis
 import { InventarioCategoriaDetalleComponent } from './components/inventario-categoria-detalle-lista/inventario-categoria-detalle';
 import { InventarioProductoDetalleComponent } from './components/inventario-producto-detalle/inventario-producto-detalle';
 
+//ruta google auth
+import { AuthGoogle } from './components/auth-google/authgoogle';
 
 
 export const routes: Routes = [
-  { path: '', component: ProductoLista },  
+  { path: '', component: AuthGoogle },//inicio  
   { path: 'productos', component: ProductoLista },         
   { path: 'tiendas', component: TiendaLista },  
   { path: 'tags', component: TagLista },
