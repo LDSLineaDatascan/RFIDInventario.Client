@@ -21,11 +21,11 @@ import { InventarioCategoriaDetalleComponent } from './components/inventario-cat
 import { InventarioProductoDetalleComponent } from './components/inventario-producto-detalle/inventario-producto-detalle';
 
 //ruta google auth
-import { AuthGoogle } from './components/auth/auth';
+import { Auth } from './components/auth/auth';
 
 
 export const routes: Routes = [
-  { path: '', component: AuthGoogle },//inicio  
+  { path: '', component: Auth },//inicio  
   { path: 'productos', component: ProductoLista },         
   { path: 'tiendas', component: TiendaLista },  
   { path: 'tags', component: TagLista },

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { AuthGoogleApi } from "../../services/auth-api";
+import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
 
 @Component({
@@ -10,8 +10,8 @@ import { CommonModule } from "@angular/common";
     standalone: true
 })
 
-export class AuthGoogle {
-    constructor(private auth: AuthGoogleApi) {}
+export class Auth {
+    constructor(private auth: AuthApi) {}
 
     login(): void {
         this.auth.login();

@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
     providedIn: 'root'
 })
 
-export class AuthGoogleApi {
+export class AuthApi {
 
     constructor(private oauthService: OAuthService,
         private router: Router
