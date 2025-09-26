@@ -21,7 +21,7 @@ import { InventarioCategoriaDetalleComponent } from './components/inventario-cat
 import { InventarioProductoDetalleComponent } from './components/inventario-producto-detalle/inventario-producto-detalle';
 
 //ruta google auth
-import { AuthGoogle } from './components/auth-google/authgoogle';
+import { AuthGoogle } from './components/auth/auth';
 
 
 export const routes: Routes = [

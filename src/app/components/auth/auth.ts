@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
-import { AuthGoogleApi } from "../../services/auth-google-api";
+import { AuthGoogleApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
 
 @Component({
     selector: 'app-auth-google',
-    templateUrl: './authgoogle.html',
-    styleUrls: ['./authgoogle.css'], 
+    templateUrl: './auth.html',
+    styleUrls: ['./auth.css'], 
     imports: [CommonModule],
     standalone: true
 })

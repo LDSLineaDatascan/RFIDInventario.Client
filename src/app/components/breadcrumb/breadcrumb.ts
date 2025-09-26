@@ -68,7 +68,7 @@ export class BreadcrumbComponent implements OnInit {
     return decodeURIComponent(segment.replace(/-/g, ' '));
   }
 
-  // --- AQUI: reemplazo completo de buildManualBreadcrumb con comportamiento determinista ---
+  
   buildManualBreadcrumb(path: string): Breadcrumb[] {
     const segments = path.split('/').filter(Boolean); // Elimina vacíos
     const crumbs: Breadcrumb[] = [];
@@ -133,12 +133,13 @@ export class BreadcrumbComponent implements OnInit {
       return crumbs;
     }
 
-    // 4) Fallback: construir crumbs simples a partir de la URL en caso no coincida con los patrones anteriores
+    // 4) Fallback: Construcción genérica
     let accumulated = '';
-    for (let i = 0; i < segments.length; i++) {
+    /*for (let i = 0; i < segments.length; i++) {
       accumulated += `/${segments[i]}`;
       crumbs.push({ label: this.formatLabelFromUrlSegment(segments[i]), url: accumulated });
-    }
-    return crumbs;
+    }*/
+    //return crumbs;
+    return [];
   }
 }

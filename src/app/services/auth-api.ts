@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { OAuthService, AuthConfig } from "angular-oauth2-oidc";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -7,7 +8,9 @@ import { OAuthService, AuthConfig } from "angular-oauth2-oidc";
 
 export class AuthGoogleApi {
 
-    constructor(private oauthService: OAuthService) {
+    constructor(private oauthService: OAuthService,
+        private router: Router
+    ) {
         this.initAuth();
     }
 
@@ -28,6 +31,8 @@ export class AuthGoogleApi {
             if (this.oauthService.hasValidAccessToken()) {
                 console.log("Usuario autenticado", this.profile);
                 console.log("Token válido: ", this.token);
+                //redireccionamiento
+                this.router.navigate(['/productos']);
             }
         });
         this.oauthService.setupAutomaticSilentRefresh();
