@@ -3,7 +3,7 @@ import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
 
 @Component({
-    selector: 'app-auth-google',
+    selector: 'app-auth',
     templateUrl: './auth.html',
     styleUrls: ['./auth.css'], 
     imports: [CommonModule],
@@ -15,6 +15,10 @@ export class Auth {
 
     login(): void {
         this.auth.login();
+    }
+
+    loginMicrosoft(): void {
+        this.auth.loginMicrosoft();
     }
 
     logout(): void {
