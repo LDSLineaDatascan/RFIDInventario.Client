@@ -11,14 +11,17 @@ import { CommonModule } from "@angular/common";
 })
 
 export class Auth {
-    constructor(private auth: AuthApi) {}
+    constructor(private auth: AuthApi) {
+        this.auth.initLoginOnAppStart();
+    }
 
     login(): void {
         this.auth.login();
     }
 
     loginMicrosoft(): void {
-        this.auth.loginMicrosoft();
+         this.auth.loginMicrosoft();
+         //this.auth.initLoginOnAppStart();
     }
 
     logout(): void {

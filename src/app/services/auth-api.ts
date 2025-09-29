@@ -43,12 +43,16 @@ export class AuthApi {
     //************LOGIN MICROSOFT*************//
     private async initAuthMicrosoft(): Promise<void> {
         const authConfig: AuthConfig = {
-            loginUrl: 'https://login.microsoftonline.com/03db959e-f515-4356-9100-cc4a9dcf258b/oauth2/v2.0/authorize',
+            requireHttps: false,
+            //loginUrl: 'https://login.microsoftonline.com/03db959e-f515-4356-9100-cc4a9dcf258b/oauth2/v2.0/authorize',
             issuer: 'https://login.microsoftonline.com/03db959e-f515-4356-9100-cc4a9dcf258b/v2.0',
-            redirectUri: window.location.origin,
+            //issuer: 'https://login.microsoftonline.com/common/v2.0',
+            //redirectUri: window.location.origin,
+            redirectUri: 'http://localhost:4200',
             responseType: 'code',           
             clientId: '53b9923e-d3c3-43e7-9036-bc2e74f09bc9',
             scope: 'openid profile email offline_access User.Read',
+            skipIssuerCheck: true,
             strictDiscoveryDocumentValidation: false,
             usePkce: true,
             showDebugInformation: true,
@@ -63,7 +67,7 @@ export class AuthApi {
                 console.log("Usuario autenticado", this.profile);
                 console.log("Token válido: ", this.token);
                 //redireccionamiento
-                this.router.navigate(['/productos']);
+                ///this.router.navigate(['/productos']);
             }
             else{
                 console.log("No hay token válido de microsoft");
@@ -72,11 +76,17 @@ export class AuthApi {
         this.oauthService.setupAutomaticSilentRefresh();
     }
 
-    loginMicrosoft(): void {
+    /*loginMicrosoft(): void {
         this.initAuthMicrosoft();
         console.log("Iniciando sesión con Microsoft...");
         //this.oauthService.initLoginFlow();
         this.oauthService.initCodeFlow();
+    }*/
+   loginMicrosoft(): void {
+        this.initAuthMicrosoft().then(() => {
+            console.log("Iniciando sesión con Microsoft...");
+            this.oauthService.initCodeFlow();
+        });
     }
 
     login(): void {
@@ -97,4 +107,31 @@ export class AuthApi {
     get token(){
         return this.oauthService.getAccessToken();
     }
+
+    initLoginOnAppStart(): void {
+    const authConfig: AuthConfig = {
+        issuer: 'https://login.microsoftonline.com/03db959e-f515-4356-9100-cc4a9dcf258b/v2.0',
+        redirectUri: 'http://localhost:4200',
+        responseType: 'code',
+        clientId: '53b9923e-d3c3-43e7-9036-bc2e74f09bc9',
+        scope: 'openid profile email offline_access User.Read',
+        strictDiscoveryDocumentValidation: false,
+        skipIssuerCheck: true,
+        usePkce: true,
+        requireHttps: false,
+        showDebugInformation: true
+    } as any;
+
+    this.oauthService.configure(authConfig);
+
+    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+        if (this.oauthService.hasValidAccessToken()) {
+            console.log("✅ Sesión restaurada automáticamente", this.profile);
+            this.router.navigate(['/productos']);
+        } else {
+            console.log("⚠️ No hay sesión iniciada");
+        }
+    });
+}
+
 }
