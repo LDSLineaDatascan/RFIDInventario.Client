@@ -14,6 +14,11 @@ export class AuthApi {
     this.handleAuthCallback();
   }
 
+  //valido si  ya hay sesión
+  isLoggedIn(): boolean {
+    return this.oauthService.hasValidAccessToken();
+  }
+
   // ************ CONFIGS ************ //
   private getGoogleConfig(): AuthConfig {
     return {
@@ -111,6 +116,13 @@ export class AuthApi {
 
   // ************LOGIN-LOGOUT************ //
   loginGoogle(): void {
+
+    if (this.isLoggedIn()) {
+      console.log("Ya hay una sesión activa.");
+      this.router.navigate(["/productos"]);
+      return;
+    }
+
     //iniciamos flow
     this.oauthService.configure(this.getGoogleConfig());
     console.log("Iniciando sesión con Google...");
@@ -129,6 +141,12 @@ export class AuthApi {
   }
 
   async loginMicrosoft(): Promise<void> {
+
+    if (this.isLoggedIn()) {
+      console.log("Ya hay una sesión activa.");
+      this.router.navigate(["/productos"]);
+      return;
+    }
     //code flow
     this.oauthService.configure(this.getMicrosoftConfig());
     console.log("Iniciando sesión con Microsoft...");
