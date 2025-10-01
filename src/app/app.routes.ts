@@ -23,6 +23,10 @@ import { InventarioProductoDetalleComponent } from './components/inventario-prod
 //ruta google auth
 import { Auth } from './components/auth/auth';
 
+//dashboard
+import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
+import { UserDashboard } from './components/user-dashboard/user-dashboard';
+
 
 export const routes: Routes = [
   { path: '', component: Auth },//inicio  
@@ -32,7 +36,10 @@ export const routes: Routes = [
   { path: 'inventario-teorico', component: InventarioTeoricoLista } ,
   { path: 'inventario-fisico', component: InventarioFisicoLista },
   { path: 'comparacion',loadComponent: () => import('./components/comparacion-lista/comparacion-lista').then(m => m.ComparacionLista)},
-  
+  { path: 'dashboard-admin', component: AdminDashboard },
+  { path: 'dashboard-user', component: UserDashboard },
+
+
   //
   //{ path: 'inventario/categorias',loadComponent: () => import('./components/inventario-categoria-lista/inventario-categoria-lista').then(m => m.InventarioCategoriasComponent)},
   //bread inical para categoria

@@ -28,4 +28,9 @@ export class Auth {
     console.log("Perfil de usuario:", this.auth.profile);
     return this.auth.profile;
   }
+
+  //boolean login success o no
+  get loggedIn(): boolean {
+  return this.auth.isLoggedIn();
+}
 }

@@ -111,7 +111,38 @@ export class AuthApi {
     console.log("Nombre:", name);
     console.log("Email:", email);
     //redicreciion
-    this.router.navigate(["/productos"]);
+    //this.router.navigate(["/productos"]);
+
+    //Llamo al backend para validar o registrar el suario
+    fetch("http://localhost:5097/api/usuario/login-federado", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ correo: email, nombre: name})
+    })
+      .then(response => response.json())
+      .then(usuario =>{
+        console.log("Usuario registrado/validado en backend:", usuario);
+
+        if(usuario.rol === "NoAutorizado"){
+          alert("Usuario no autorizado. Contacte con el administrador.");
+          this.logout();
+        }
+        else{
+          if(usuario.rol ==="Admin")
+          {
+            this.router.navigate(["/adminDashboard"]);
+          }else if(usuario.rol === "User"){
+            this.router.navigate(["/userDashboard"]);
+          }
+          else{
+            //fallback
+            this.router.navigate(["/inicio"]);
+          }
+        }
+      })
+      .catch(err => console.error("Error comunicándose con el backend:", err));
   }
 
   // ************LOGIN-LOGOUT************ //
