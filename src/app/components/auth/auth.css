@@ -5,6 +5,13 @@ html, body{
     overflow: hidden;
 }
 
+.logo {
+  display: block;
+  margin: 0 auto 20px auto;
+  max-width: 200px;
+  height: auto;
+}
+
 .login-container {
   display: flex;
   align-items: center;
