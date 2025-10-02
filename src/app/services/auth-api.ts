@@ -114,7 +114,7 @@ export class AuthApi {
     //this.router.navigate(["/productos"]);
 
     //Llamo al backend para validar o registrar el suario
-    fetch("http://localhost:5097/api/usuario/login-federado", {
+    fetch("http://localhost:5097/api/Usuarios/Login-federado", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -132,9 +132,9 @@ export class AuthApi {
         else{
           if(usuario.rol ==="Admin")
           {
-            this.router.navigate(["/adminDashboard"]);
+            this.router.navigate(["/dashboard-admin"]);
           }else if(usuario.rol === "User"){
-            this.router.navigate(["/userDashboard"]);
+            this.router.navigate(["/dashboard-user"]);
           }
           else{
             //fallback
