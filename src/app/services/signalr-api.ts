@@ -3,15 +3,23 @@ import * as signalR from '@microsoft/signalr';
 
 @Injectable({providedIn: 'root'})
 export class SignalRService{
+    //Conexión a SignalR
     private hubConnection!: signalR.HubConnection;
+
+    //Inventario
     public onCategoriaReinicio?: (categoria: string) => void;
     public onProductoReinicio?: (idProducto: string) => void;
     public onActualizarDatos?: () => void;  
+
+    //Usuarios (admin dashboard)
+    public onUsuarioCreado?: (usuario: any) => void;
+    public onUsuarioEliminado?: (id: number) => void;
+    public onUsuarioActualizado?: (usuario: any) => void;
     
 
     public iniciarConexion(): void {
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl('http://localhost:5097/notificacionInventarios')
+            .withUrl('http://localhost:5097/notificationHub')
             .withAutomaticReconnect()
             .build();
 
@@ -19,6 +27,8 @@ export class SignalRService{
             .start()
             .then(() => console.log('Conexión establecida con SignalR'))
             .catch(err => console.error('Error al iniciar la conexión con SignalR: ', err));
+
+        //******************************Eventos para inventario*******************************//
 
         this.hubConnection.on('Iniciar', (idTienda: string)=>{
             console.log('Inventario iniciado para tienda:', idTienda);
@@ -49,22 +59,33 @@ export class SignalRService{
             this.onActualizarDatos?.(); 
         });
 
+        //**************************Eventos para usuarios (admin dashboard)*************************//
+
+        this.hubConnection.on("UsuarioCreado", (usuario: any) => {
+            console.log("Usuario creado:", usuario);
+            this.onUsuarioCreado?.(usuario);
+        });
+
+        this.hubConnection.on("UsuarioEliminado", (id: number) => {
+            console.log("Usuario eliminado:", id);
+            this.onUsuarioEliminado?.(id);
+        });
+
+        this.hubConnection.on("UsuarioActualizado", (usuario: any) => {
+            console.log("Usuario actualizado:", usuario);
+            this.onUsuarioActualizado?.(usuario);
+        });
+
     }
-
-    /*reiniciarDesdeCliente(idTienda: string): Promise<void> {
-    return this.hubConnection.invoke('ReiniciarDesdeCliente', idTienda);
-    }*/
-
-    /*public onReiniciar(callback: (idTienda:string)=>void): void {
-        this.hubConnection.on('Reiniciar', callback);
-    }*/
-
+    
     escucharEvento(nombreEvento: string, callback: (dato: any) => void) {
     this.hubConnection.on(nombreEvento, callback);
-  }
+    }
 
   cerrarConexion() {
     this.hubConnection.stop();
   }
+
+ 
 
 }
