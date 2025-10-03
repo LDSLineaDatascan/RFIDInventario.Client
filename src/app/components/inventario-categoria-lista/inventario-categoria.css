@@ -107,21 +107,53 @@ tr:hover {
 }
 
 /* ------------------------
-   BOTÓN DETALLE
+   BOTONES BASE
 ------------------------ */
-button {
+button,
+.btn {
   background-color: #c9c9c9;
   border: none;
-  padding: 8px 14px;
+  padding: 6px 12px;   /* más compacto */
   color: white;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
+  font-size: 0.9rem;   /* más pequeño */
+  line-height: 1.2;    /* uniforma altura */
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+button:hover,
+.btn:hover {
   background-color: #0177fc;
+  color: #fff;
+}
+
+/* ------------------------
+   BOTONES SUPERIORES (Ver, Reiniciar, CSV)
+------------------------ */
+.boton-descarga-container .btn {
+  padding: 6px 12px !important;  /* mismo alto para todos */
+  font-size: 0.9rem !important;
+  line-height: 1.2 !important;
+}
+
+/* ------------------------
+   BOTONES DE TABLA
+------------------------ */
+table button {
+  background-color: #c9c9c9 !important;
+  color: #fff !important;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border-radius: 5px;
+  font-weight: 500;
+  border: none;
+}
+
+table button:hover {
+  background-color: #0177fc !important;
+  color: #fff !important;
 }
 
 /* ------------------------
@@ -133,27 +165,22 @@ p {
   color: #999;
 }
 
-
 /* ------------------------
-   btn descargar csv
+   BOTONES SUPERIORES
 ------------------------ */
-
-.btn-descargar:hover {
-  background-color: #7ea32c; /* un poco más oscuro al pasar el mouse */
-}
 .boton-descarga-container {
-  width: 80%;       /* igual al ancho de la tabla */
-  margin: 0 auto;   /* centra el contenedor en la página */
+  width: 80%;
+  margin: 0 auto;
   display: flex;
-  justify-content: flex-end;  /* alinea el btn al extremo derecho */
+  justify-content: flex-end;
 }
 
 .boton-descarga-container button {
-  margin-right: 10px; /* espacio entre botones */
+  margin-right: 10px;
 }
 
 .boton-descarga-container button:last-child {
-  margin-right: 0; /* el último sin espacio extra */
+  margin-right: 0;
 }
 
 /* ------------------------
@@ -185,6 +212,5 @@ p {
   font-size: 0.9rem;
   line-height: 22px;
   font-weight: bold;
-  transition: width 1s ease-in-out; /* animación suave */
+  transition: width 1s ease-in-out;
 }
-
