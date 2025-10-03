@@ -89,4 +89,9 @@ export class AdminDashboard implements OnInit {
       });
   }
 
+  editarUsuario(u: any) {
+  // Clonamos el usuario para no modificar directamente la lista
+  this.usuarioEncontrado = { ...u };
+  }
+
 }

@@ -69,7 +69,7 @@
                 <button class="btn btn-sm btn-outline-primary me-2"
                         data-bs-toggle="modal"
                         data-bs-target="#editModal"
-                        (click)="usuarioEncontrado = {u}">
+                        (click)="usuarioEncontrado = u">
                   Editar
                 </button>
                 <!-- Botón Eliminar -->
@@ -87,10 +87,11 @@
 
 </div>
 
-<!-- Modal de edición -->
+<!-- Modal de edición en tabla editar -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow">
+    <!--*ngIf -->
+    <div class="modal-content border-0 shadow" *ngIf="usuarioEncontrado">
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title" id="editModalLabel">Editar usuario</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
