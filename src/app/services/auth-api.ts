@@ -130,6 +130,10 @@ export class AuthApi {
           this.logout();
         }
         else{
+          //guardo usuario para cardview wn admindashboard
+          localStorage.setItem("usuarioSesion", JSON.stringify(usuario));
+
+          //redirecciono segun rol
           if(usuario.rol ==="Admin")
           {
             this.router.navigate(["/dashboard-admin"]);

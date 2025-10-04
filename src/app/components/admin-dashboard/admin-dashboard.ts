@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { AdminDashboardService } from '../../services/admin-dashboard-api';
 import { SignalRService } from '../../services/signalr-api';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthApi } from '../../services/auth-api';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -17,10 +19,14 @@ export class AdminDashboard implements OnInit {
   ///propiedades para filtrar correo
   filtroCorreo: string = '';
   usuarioEncontrado: any | null = null;
+  usuarioSesion: any | null = null;
 
   constructor(
     private adminDashboardService: AdminDashboardService,
-    private signalRService: SignalRService) { }
+    private signalRService: SignalRService,
+    private router: Router,
+    private authApi: AuthApi
+  ) { }
 
   ngOnInit(): void {
     //1. cargo usuarios con api rest
@@ -53,7 +59,13 @@ export class AdminDashboard implements OnInit {
       }
       console.log("Usuario actualizado:", usuario)
     });
-    
+
+    //6. recupero datos de sesión
+    const usuarioSesion = localStorage.getItem("usuarioSesion");
+    if (usuarioSesion) {
+      this.usuarioSesion = JSON.parse(usuarioSesion);
+      console.log("Usuario de sesión recuperado:", this.usuarioSesion);
+    }
   }
 
   buscarPorCorreo() {
@@ -92,6 +104,19 @@ export class AdminDashboard implements OnInit {
   editarUsuario(u: any) {
   // Clonamos el usuario para no modificar directamente la lista
   this.usuarioEncontrado = { ...u };
+  }
+
+  logout() {
+ console.log("Cerrando sesión desde dashboard...");
+  
+  // 1️⃣ Cerrar sesión OAuth2
+  this.authApi.logout();
+
+  // 2️⃣ Limpiar sesión local
+  localStorage.removeItem("usuarioSesion");
+
+  // 3️⃣ Redirigir al inicio
+  this.router.navigate(['/']);
   }
 
 }
