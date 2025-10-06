@@ -26,18 +26,23 @@ import { Auth } from './components/auth/auth';
 //dashboard
 import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
 import { UserDashboard } from './components/user-dashboard/user-dashboard';
-
+import { noAuthGuard } from './guards/no-auth-guard';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
-  { path: '', component: Auth },//inicio  
+  //{ path: '', component: Auth },//inicio 
+  //login protegido con guards  
+  { path: '', component: Auth, canActivate:[noAuthGuard]},
+  { path: 'dashboard-admin', component: AdminDashboard, canActivate: [authGuard]},
+  { path: 'dashboard-user', component: UserDashboard, canActivate:[authGuard]},
   { path: 'productos', component: ProductoLista },         
   { path: 'tiendas', component: TiendaLista },  
   { path: 'tags', component: TagLista },
   { path: 'inventario-teorico', component: InventarioTeoricoLista } ,
   { path: 'inventario-fisico', component: InventarioFisicoLista },
   { path: 'comparacion',loadComponent: () => import('./components/comparacion-lista/comparacion-lista').then(m => m.ComparacionLista)},
-  { path: 'dashboard-admin', component: AdminDashboard },
-  { path: 'dashboard-user', component: UserDashboard },
+  //{ path: 'dashboard-admin', component: AdminDashboard },
+  //{ path: 'dashboard-user', component: UserDashboard },
 
 
   //
