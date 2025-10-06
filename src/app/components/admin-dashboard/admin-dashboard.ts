@@ -108,14 +108,8 @@ export class AdminDashboard implements OnInit {
 
   logout() {
  console.log("Cerrando sesión desde dashboard...");
-  
-  // 1️⃣ Cerrar sesión OAuth2
   this.authApi.logout();
-
-  // 2️⃣ Limpiar sesión local
   localStorage.removeItem("usuarioSesion");
-
-  // 3️⃣ Redirigir al inicio
   this.router.navigate(['/']);
   }
 
