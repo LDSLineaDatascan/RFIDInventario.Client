@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { ResolveStart, Routes } from '@angular/router';
 import { RouterModule } from '@angular/router'; 
 import { ProductoLista } from './components/producto-lista/producto-lista';
 
@@ -35,12 +35,13 @@ export const routes: Routes = [
   { path: '', component: Auth, canActivate:[noAuthGuard]},
   { path: 'dashboard-admin', component: AdminDashboard, canActivate: [authGuard]},
   { path: 'dashboard-user', component: UserDashboard, canActivate:[authGuard]},
-  { path: 'productos', component: ProductoLista },         
-  { path: 'tiendas', component: TiendaLista },  
-  { path: 'tags', component: TagLista },
-  { path: 'inventario-teorico', component: InventarioTeoricoLista } ,
-  { path: 'inventario-fisico', component: InventarioFisicoLista },
-  { path: 'comparacion',loadComponent: () => import('./components/comparacion-lista/comparacion-lista').then(m => m.ComparacionLista)},
+  { path: 'productos', component: ProductoLista, canActivate:[authGuard], data:{roles: ['Admin']} },         
+  { path: 'tiendas', component: TiendaLista, canActivate:[authGuard],data:{roles:['Admin']} },  
+  { path: 'tags', component: TagLista, canActivate:[authGuard], data:{roles:['Admin']} },
+  { path: 'inventario-teorico', component: InventarioTeoricoLista, canActivate:[authGuard], data:{roles:['Admin', 'User']}} ,
+  { path: 'inventario-fisico', component: InventarioFisicoLista, canActivate:[authGuard], data:{roles:['Admin', 'User']}},
+  { path: 'comparacion',loadComponent: () => import('./components/comparacion-lista/comparacion-lista').then(m => m.ComparacionLista),
+    canActivate:[authGuard], data:{roles:['Admin', 'User']}},
   //{ path: 'dashboard-admin', component: AdminDashboard },
   //{ path: 'dashboard-user', component: UserDashboard },
 
@@ -61,7 +62,8 @@ export const routes: Routes = [
       console.log("Ruta cargada: inventario/categorias SIN idTienda");
       return m.InventarioCategoriasComponent;
     }),
-  data: { breadcrumb: 'Categorías' }
+    canActivate:[authGuard],
+  data: { breadcrumb: 'Categorías', roles:['Admin', 'User']}
 },
 
   //RUTA PARA SOSTENER IDTEINDA
@@ -72,14 +74,16 @@ export const routes: Routes = [
       console.log("Ruta cargada: inventario/categorias CON idTienda");
       return m.InventarioCategoriasComponent;
     }),
-  data: { breadcrumb: 'Categorías' }
+    canActivate:[authGuard],
+  data: { breadcrumb: 'Categorías', roles:['Admin', 'User'] }
 },
 
   { path: 'inventario-categoria/:idTienda/:categoria', component: InventarioCategoriaDetalleComponent},
   
   //ruta para categoria detalle
   { path: 'inventario-categoria-detalle/:idTienda/:categoria', component: InventarioCategoriaDetalleComponent ,
-    data: { breadcrumb: 'Detalle de Categoría' }
+    canActivate:[authGuard],
+    data: { breadcrumb: 'Detalle de Categoría', roles:['Admin', 'User'] }
   }, 
   { path: 'productoDetalle/:idTienda/:idProducto', component: InventarioCategoriaDetalleComponent },
   
