@@ -47,16 +47,25 @@
       </div>
 
       <div *ngIf="usuarioEncontrado" 
-           class="alert alert-success mt-3 d-flex justify-content-between align-items-center">
+        class="alert alert-success mt-3 d-flex justify-content-between align-items-center">
         <div>
           <strong>Encontrado:</strong> {{ usuarioEncontrado.nombre }} ({{ usuarioEncontrado.correo }})
         </div>
-        <button class="btn btn-sm btn-outline-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#editModal"
-                (click)="editarUsuario(usuarioEncontrado)">
-          Editar
-        </button>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-outline-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#editModal"
+            (click)="editarUsuario(usuarioEncontrado)">
+            Editar
+          </button>
+
+          <button class="btn btn-sm btn-outline-secondary"
+            data-bs-toggle="modal"
+            data-bs-target="#tiendasModal"
+            (click)="verTiendaUsuario(usuarioEncontrado)">
+            Ver tiendas
+          </button>
+        </div>
       </div>
 
       <div *ngIf="usuarioEncontrado === null && filtroCorreo">
@@ -155,3 +164,71 @@
     </div>
   </div>
 </div>
+
+<!-- Modal UsuarioTiendas -->
+<div class="modal fade" id="tiendasModal" tabindex="-1" aria-labelledby="tiendasModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow" *ngIf="usuarioEncontrado">
+      <div class="modal-header bg-secondary text-white">
+        <h5 class="modal-title" id="tiendasModalLabel">Tiendas de {{ usuarioEncontrado.nombre }}</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Tabla de tiendas asignadas -->
+        <h6>Tiendas asignadas</h6>
+        <table class="table table-sm table-hover">
+          <thead>
+            <tr>
+              <th>Código tienda</th>
+              <th>Rol asignado</th>
+              <th>Asignado por</th>
+              <th>Fecha asignación</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of tiendasUsuario">
+              <td>{{ t.tiendaCodigo }}</td>
+              <td>{{ t.rolAsignado }}</td>
+              <td>{{ t.asignadoPor?.correo || '-' }}</td>
+              <td>{{ t.fechaAsignacion | date:'short' }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="desasignarTienda(t)">
+                  Desasignar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <!-- Formulario asignar nueva tienda -->
+        <h6>Asignar nueva tienda</h6>
+        <form (ngSubmit)="asignarTienda()" #asignarForm="ngForm" class="row g-2 align-items-end">
+          <div class="col-md-5">
+            <label class="form-label">Código tienda</label>
+            <input type="text" class="form-control" [(ngModel)]="nuevaTiendaCodigo" name="tiendaCodigo" required>
+          </div>
+          <div class="col-md-5">
+            <label class="form-label">Rol</label>
+            <select class="form-select" [(ngModel)]="nuevoRolAsignado" name="rol" required>
+              <option value="User">User</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-success w-100">Asignar</button>
+          </div>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

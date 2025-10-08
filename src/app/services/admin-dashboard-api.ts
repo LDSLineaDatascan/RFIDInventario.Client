@@ -35,4 +35,22 @@ export class AdminDashboardService {
     console.log("Eliminando usuario:", id);
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
+
+  //asignar tiedas
+  getTiendasPorUsuario(usuarioId: number): Observable<any[]> {
+  return this.http.get<any[]>(`http://localhost:5097/api/UsuarioTienda/usuario/${usuarioId}`);
+}
+
+asignarTienda(usuarioId: number, tiendaCodigo: string, rol: string, asignadoPorId: number): Observable<any> {
+  return this.http.post<any>(`http://localhost:5097/api/UsuarioTienda/asignar`, {
+    usuarioId,
+    tiendaCodigo,
+    rolAsignado: rol,
+    asignadoPorId
+  });
+}
+
+desasignarTienda(usuarioCorreo: string, tiendaCodigo: string): Observable<any> {
+  return this.http.delete<any>(`http://localhost:5097/api/UsuarioTienda/desasignar/${usuarioCorreo}/${tiendaCodigo}`);
+}
 }

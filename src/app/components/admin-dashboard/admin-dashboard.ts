@@ -21,6 +21,11 @@ export class AdminDashboard implements OnInit {
   usuarioEncontrado: any | null = null;
   usuarioSesion: any | null = null;
 
+  //propiedades para asignar tiendas  
+  tiendasUsuario: any[] = [];
+  nuevaTiendaCodigo: string="";
+  nuevoRolAsignado: string ="";
+
   constructor(
     private adminDashboardService: AdminDashboardService,
     private signalRService: SignalRService,
@@ -112,5 +117,47 @@ export class AdminDashboard implements OnInit {
   localStorage.removeItem("usuarioSesion");
   this.router.navigate(['/']);
   }
+
+  //****************************************asignacion de tiendas***************************************//
+  verTiendaUsuario(usuario:any)
+  {
+    this.usuarioEncontrado=usuario;
+    this.adminDashboardService.getTiendasPorUsuario(usuario.id).subscribe(data => {
+    this.tiendasUsuario = data;});
+  }
+
+  asignarTienda() {
+  if (!this.nuevaTiendaCodigo || !this.nuevoRolAsignado) return;
+
+  if (!this.usuarioSesion) {
+    alert("No se encontró usuario de sesión");
+    return;
+  }
+
+  this.adminDashboardService.asignarTienda(
+    this.usuarioEncontrado.id,
+    this.nuevaTiendaCodigo,
+    this.nuevoRolAsignado,
+    this.usuarioSesion.id // <-- agregar el usuario que asigna
+  ).subscribe({
+    next: (asignacion) => {
+      this.tiendasUsuario.push(asignacion);
+      this.nuevaTiendaCodigo = '';
+      this.nuevoRolAsignado = 'User';
+    },
+    error: (err) => {
+      alert(err.error?.message || "Error al asignar tienda");
+    }
+  });
+}
+
+  desasignarTienda(tienda: any) {
+  this.adminDashboardService.desasignarTienda(
+    this.usuarioEncontrado.correo, // o usuarioId si prefieres
+    tienda.tiendaCodigo
+  ).subscribe(() => {
+    this.tiendasUsuario = this.tiendasUsuario.filter(x => x !== tienda);});
+  }
+  
 
 }
