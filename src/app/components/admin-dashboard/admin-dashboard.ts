@@ -159,10 +159,14 @@ export class AdminDashboard implements OnInit {
     this.usuarioEncontrado.id,
     this.nuevaTiendaCodigo,
     this.nuevoRolAsignado,
-    this.usuarioSesion.id // <-- agregar el usuario que asigna
+    this.usuarioSesion.id 
   ).subscribe({
-    next: (asignacion) => {
-      this.tiendasUsuario.push(asignacion);
+    next: () => {
+      this.adminDashboardService.getTiendasPorUsuario(this.usuarioEncontrado.id).subscribe(data =>{
+        this.tiendasUsuario=data;
+      });
+
+      //this.tiendasUsuario.push(asignacion);
       this.nuevaTiendaCodigo = '';
       this.nuevoRolAsignado = 'User';
     },
