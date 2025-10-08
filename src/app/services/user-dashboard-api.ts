@@ -6,12 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserDashboardServices {
+  private apiUrl = 'http://localhost:5097/api/UsuarioTienda'; // reutiliza controlador existente
 
-  private apiUrl = 'http://localhost:5097/api/user/dashboard';
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  getDashboardUser(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  getTiendasPorUsuario(usuarioId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/usuario/${usuarioId}`);
   }
 }

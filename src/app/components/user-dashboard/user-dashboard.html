@@ -1,1 +1,86 @@
-<p>user-dashboard works!</p>
+<div class="container-fluid px-4 mt-4">
+
+  <!-- Header -->
+  <h2 class="mb-4 fw-bold">Panel del Usuario</h2>
+
+  <div class="row g-4 mb-4 align-items-stretch">
+    <!-- Card Sesión -->
+    <div class="col-12 col-md-6" *ngIf="usuarioSesion">
+      <div class="card shadow-sm border-0 rounded-3 h-100">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title text-success">Sesión activa</h5>
+            <p class="card-text fw-bold mb-0">{{ usuarioSesion.nombre }}</p>
+            <p class="text-muted mb-1">{{ usuarioSesion.correo }}</p>
+            <span class="badge bg-info">{{ usuarioSesion.rol }}</span>
+          </div>
+          <button class="btn btn-outline-danger btn-sm" (click)="logout()">
+            <i class="bi bi-box-arrow-right me-1"></i> Cerrar sesión
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Tiendas asignadas -->
+    <div class="col-12 col-md-6">
+      <div class="card shadow-sm border-0 rounded-3 h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Tiendas asignadas</h5>
+          <p class="card-text display-6 fw-bold">{{ tiendasAsignadas.length }}</p>
+          <p class="text-muted mb-0">Total de tiendas vinculadas a tu usuario</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Búsqueda -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Buscar tienda asignada</h5>
+      <div class="input-group">
+        <input
+          type="text"
+          [(ngModel)]="filtroTienda"
+          class="form-control"
+          placeholder="Buscar por código de tienda..."
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de tiendas -->
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Mis tiendas asignadas</h5>
+
+      <div class="table-responsive">
+        <table class="table align-middle table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Código tienda</th>
+              <th>Rol asignado</th>
+              <th>Asignado por</th>
+              <th>Fecha asignación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of tiendasFiltradas">
+              <td>{{ t.tiendaCodigo }}</td>
+              <td>
+                <span class="badge bg-secondary">{{ t.rolAsignado }}</span>
+              </td>
+              <td>{{ t.asignadoPor?.correo || '-' }}</td>
+              <td>{{ t.fechaAsignacion | date: 'short' }}</td>
+            </tr>
+
+            <tr *ngIf="tiendasFiltradas.length === 0">
+              <td colspan="4" class="text-center text-muted py-3">
+                No se encontraron tiendas asignadas.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

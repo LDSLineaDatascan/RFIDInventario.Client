@@ -1,0 +1,33 @@
+.container-fluid {
+  max-width: 1200px;
+}
+
+.card {
+  border-radius: 12px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.table thead th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.table tbody td {
+  vertical-align: middle;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.btn {
+  border-radius: 8px;
+}
