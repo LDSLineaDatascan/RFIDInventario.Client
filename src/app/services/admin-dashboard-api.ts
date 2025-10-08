@@ -51,6 +51,8 @@ asignarTienda(usuarioId: number, tiendaCodigo: string, rol: string, asignadoPorI
 }
 
 desasignarTienda(usuarioCorreo: string, tiendaCodigo: string): Observable<any> {
-  return this.http.delete<any>(`http://localhost:5097/api/UsuarioTienda/desasignar/${usuarioCorreo}/${tiendaCodigo}`);
+  return this.http.delete<any>(
+    `http://localhost:5097/api/UsuarioTienda/correo?correoUsuario=${usuarioCorreo}&tiendaCodigo=${tiendaCodigo}`
+  );
 }
 }
