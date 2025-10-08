@@ -26,6 +26,8 @@ export class AdminDashboard implements OnInit {
   nuevaTiendaCodigo: string="";
   nuevoRolAsignado: string ="";
 
+  usuariosFiltrados: any[]=[];
+
   constructor(
     private adminDashboardService: AdminDashboardService,
     private signalRService: SignalRService,
@@ -39,6 +41,7 @@ export class AdminDashboard implements OnInit {
       
       this.usuarios = data;
       console.log("Usuarios: ",data);
+      this.usuariosFiltrados=data;
     });
 
     //2. incio conexion signalR
@@ -183,6 +186,19 @@ export class AdminDashboard implements OnInit {
   ).subscribe(() => {
     this.tiendasUsuario = this.tiendasUsuario.filter(x => x !== tienda);});
   }
+
+  filtrarUsuarios() {
+  const filtro = this.filtroCorreo.toLowerCase().trim();
+  if (!filtro) {
+    this.usuariosFiltrados = this.usuarios;
+    return;
+  }
+
+  this.usuariosFiltrados = this.usuarios.filter(u =>
+    u.correo.toLowerCase().includes(filtro)
+  );
+}
+
   
 
 }
