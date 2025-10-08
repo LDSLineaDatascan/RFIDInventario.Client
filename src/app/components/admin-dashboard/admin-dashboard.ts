@@ -197,6 +197,12 @@ export class AdminDashboard implements OnInit {
   this.usuariosFiltrados = this.usuarios.filter(u =>
     u.correo.toLowerCase().includes(filtro)
   );
+
+  this.usuariosFiltrados = this.usuarios.filter(u =>
+  u.correo.toLowerCase().includes(filtro) 
+  //u.nombre.toLowerCase().includes(filtro) 
+  //u.rol.toLowerCase().includes(filtro)
+);
 }
 
   
