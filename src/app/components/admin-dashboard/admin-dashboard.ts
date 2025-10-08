@@ -71,6 +71,27 @@ export class AdminDashboard implements OnInit {
       this.usuarioSesion = JSON.parse(usuarioSesion);
       console.log("Usuario de sesión recuperado:", this.usuarioSesion);
     }
+
+    //7. signalR: escuchar cuanod se asigne una tienda en cualquier panel
+    this.signalRService.escucharEvento('TiendaAsignada', (asignacion: any)=>{
+      console.log("tienda asignada comunica signalR", asignacion);
+
+      //si usuario es el mismo al que se asigno la tienda
+      if(this.usuarioEncontrado && asignacion.usuarioid === this.usuarioEncontrado.id)
+      {
+        const existe= this.tiendasUsuario.some(t => t.id === asignacion.id);
+        if(!existe){
+          this.tiendasUsuario.push(asignacion);
+        }
+      }
+    });
+
+    //8. escuchar desasignación
+    this.signalRService.escucharEvento('TiendaDesasignada', (id: number) => {
+      console.log("Tienda desasignada (SignalR):", id);
+      this.tiendasUsuario = this.tiendasUsuario.filter(t => t.id !== id);
+    });
+
   }
 
   buscarPorCorreo() {
@@ -152,8 +173,8 @@ export class AdminDashboard implements OnInit {
 }
 
   desasignarTienda(tienda: any) {
-  this.adminDashboardService.desasignarTienda(
-    this.usuarioEncontrado.correo, // o usuarioId si prefieres
+    this.adminDashboardService.desasignarTienda(
+    this.usuarioEncontrado.correo, //usuarioid
     tienda.tiendaCodigo
   ).subscribe(() => {
     this.tiendasUsuario = this.tiendasUsuario.filter(x => x !== tienda);});

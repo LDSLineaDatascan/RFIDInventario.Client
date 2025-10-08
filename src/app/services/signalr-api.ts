@@ -5,6 +5,7 @@ import * as signalR from '@microsoft/signalr';
 export class SignalRService{
     //Conexión a SignalR
     private hubConnection!: signalR.HubConnection;
+    private conectado = false; //bandera evitar conexiones
 
     //Inventario
     public onCategoriaReinicio?: (categoria: string) => void;
@@ -15,9 +16,19 @@ export class SignalRService{
     public onUsuarioCreado?: (usuario: any) => void;
     public onUsuarioEliminado?: (id: number) => void;
     public onUsuarioActualizado?: (usuario: any) => void;
+
+    //Asignaciones de admin a usuario
+    public onTiendaAsignada?: (asignacion: any)=> void;
+    public onTiendaDesasignada?: (id: number)=>void;
     
 
     public iniciarConexion(): void {
+
+        if (this.conectado) {
+            console.log('SignalR ya conectado, evitando reconexión múltiple.');
+            return;
+            }
+
         this.hubConnection = new signalR.HubConnectionBuilder()
             .withUrl('http://localhost:5097/notificationHub')
             .withAutomaticReconnect()
@@ -25,7 +36,10 @@ export class SignalRService{
 
         this.hubConnection
             .start()
-            .then(() => console.log('Conexión establecida con SignalR'))
+            .then(() => {
+                this.conectado = true; //conexión activa
+                console.log('Conexión establecida con SignalR');
+            })
             .catch(err => console.error('Error al iniciar la conexión con SignalR: ', err));
 
         //******************************Eventos para inventario*******************************//
@@ -76,15 +90,26 @@ export class SignalRService{
             this.onUsuarioActualizado?.(usuario);
         });
 
+        //***************************Eventos para tienda*****************************************//
+        this.hubConnection.on("TiendaAsignada", (asignacion: any)=>{
+            console.log("Tienda asignada signalR", asignacion);
+            this.onTiendaAsignada?.(asignacion);
+        });
+
+        this.hubConnection.on("TiendaDesasignada", (id: number)=> {
+            console.log("Tienda desasignada signalR", id);
+            this.onTiendaDesasignada?.(id);
+        });
+
     }
     
     escucharEvento(nombreEvento: string, callback: (dato: any) => void) {
     this.hubConnection.on(nombreEvento, callback);
     }
 
-  cerrarConexion() {
+    cerrarConexion() {
     this.hubConnection.stop();
-  }
+    }
 
  
 
