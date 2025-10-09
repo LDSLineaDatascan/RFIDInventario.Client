@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Producto, ProductoApi } from '../../services/producto-api';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-producto-lista',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './producto-lista.html',
   styleUrl: './producto-lista.css'
 })
@@ -13,6 +14,9 @@ import { CommonModule } from '@angular/common';
 export class ProductoLista implements OnInit {
   productos: Producto[] = [];
   error: string | null = null;
+
+  filtro: string = '';
+  productosFiltrados: Producto[] = [];
 
   constructor(private productoApi: ProductoApi) {}
 
@@ -25,6 +29,7 @@ export class ProductoLista implements OnInit {
       next: (data) => {
         console.log('Productos recibidos:', data); 
         this.productos = data;
+        this.productosFiltrados = [...data];
         this.error = null;
       },
       error: (err) => {
@@ -33,5 +38,19 @@ export class ProductoLista implements OnInit {
       }
     });
   }
+
+  filtrarProductos(): void {
+  const f = (this.filtro || '').toLowerCase().trim();
+  if (!f) {
+    this.productosFiltrados = [...this.productos];
+    return;
+  }
+  this.productosFiltrados = this.productos.filter(p =>
+    (p.codigo || '').toLowerCase().includes(f) ||
+    (p.nombre || '').toLowerCase().includes(f) ||
+    (p.categoria || '').toLowerCase().includes(f)
+  );
+}
+
   
 }

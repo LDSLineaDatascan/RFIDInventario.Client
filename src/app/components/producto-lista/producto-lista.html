@@ -1,22 +1,53 @@
-<h2>Lista de Productos</h2>
+<div class="container-fluid px-4 mt-4">
+  <!-- Card principal -->
+  <div class="card tienda-card shadow-sm border-0 rounded-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="card-title mb-0 text-dark fw-semibold">Listado de Productos</h5>
+        <span class="badge bg-info text-dark px-3 py-2 shadow-sm">
+          Total productos: {{ productosFiltrados.length }}
+        </span>
+      </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Código</th>
-      <th>Nombre</th>
-      <th>Categoría</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let producto of productos">
-      <td>{{ producto.codigo }}</td>
-      <td>{{ producto.nombre }}</td>
-      <td>{{ producto.categoria }}</td>
-    </tr>
-  </tbody>
-</table>
+      <!-- Buscador-->
+      <div class="input-group mb-3 shadow-sm rounded-4 overflow-hidden">
+        <input
+          type="text"
+          class="form-control border-0"
+          placeholder="Buscar por código, nombre o categoría..."
+          [(ngModel)]="filtro"
+          (input)="filtrarProductos()"
+        />
+        <button class="btn btn-primary">
+          <i class="bi bi-search"></i>
+          Buscar
+        </button>
+      </div>
 
-<div *ngIf="error" style="color: red;">
-  {{ error }}
+      <!-- Tabla  -->
+      <div class="table-responsive">
+        <table class="table align-middle table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Categoría</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of productosFiltrados">
+              <td>{{ producto.codigo }}</td>
+              <td>{{ producto.nombre }}</td>
+              <td>{{ producto.categoria }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mensaje sin datos -->
+      <div *ngIf="productosFiltrados.length === 0" class="text-center text-muted mt-3">
+        No hay productos disponibles.
+      </div>
+    </div>
+  </div>
 </div>

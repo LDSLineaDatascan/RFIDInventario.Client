@@ -1,47 +1,117 @@
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #2c3e50;
-  font-size: 1.8rem;
-  font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
+/* --- Contenedor general --- */
+.container-fluid {
+  max-width: 1200px;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #212529;
 }
 
-table {
-  width: 80%;
-  margin: 0 auto;
-  border-collapse: collapse;
-  margin-top: 1rem;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  background-color: #fff;
-  border-radius: 8px;
-  overflow: hidden;
+/* --- Card principal --- */
+.tienda-card {
+  border-radius: 18px !important;
+  background: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
-th, td {
+/* --- Efecto movimiento 3D suave --- */
+.tienda-card:hover {
+  transform: translateY(-6px) rotateX(2deg) rotateY(2deg);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+/* --- Buscador completo --- */
+.input-group {
+  border-radius: 1rem !important;
+  overflow: hidden; /* mantiene los bordes redondeados */
+  display: flex;
+}
+
+/* Input */
+.input-group .form-control {
+  border: none;
+  border-radius: 1rem 0 0 1rem !important; /* solo izquierda redondeada */
   padding: 12px 16px;
-  text-align: left;
-  border-bottom: 1px solid #ccc;
+  font-size: 0.85rem;
+  background: #f8f9fa;
+  outline: none;
 }
 
-th {
-  background-color: #032f7d;
-  color: white;
-  font-weight: bold;
-}
-
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-tr:hover {
-  background-color: #e0e0e0;
-  transition: background-color 0.3s;
-}
-
-p {
-  text-align: center;
-  font-style: italic;
+.input-group .form-control::placeholder {
   color: #999;
+}
+
+/* Botón */
+.input-group .btn {
+  border-radius: 0 1rem 1rem 0 !important; /* solo derecha redondeada */
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.input-group .btn i {
+  font-size: 1.1rem;
+}
+
+/* --- Tabla --- */
+
+.table thead {
+  background-color: #032f7d !important;
+}
+
+
+.table thead th {
+  background-color: #032f7d !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: #FFFFFF;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+/* --- Filas de la tabla con efecto sutil --- */
+.table-hover tbody tr {
+  transition: background-color 0.25s ease, transform 0.25s ease;
+  will-change: background-color, transform;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f4f8ff; /* tono suave */
+  transform: translateY(-1px); /* movimiento reducido */
+}
+
+/* --- Badges --- */
+.badge {
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+}
+
+/* --- Sin datos --- */
+.text-muted {
+  color: #6c757d !important;
+  font-style: italic;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .tienda-card {
+    border-radius: 16px !important;
+  }
+
+  .table thead {
+    font-size: 0.8rem;
+  }
 }
