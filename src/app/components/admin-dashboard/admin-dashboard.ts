@@ -79,7 +79,7 @@ export class AdminDashboard implements OnInit {
     this.signalRService.escucharEvento('TiendaAsignada', (asignacion: any)=>{
       console.log("tienda asignada comunica signalR", asignacion);
 
-      //si usuario es el mismo al que se asigno la tienda
+      
       if(this.usuarioEncontrado && asignacion.usuarioid === this.usuarioEncontrado.id)
       {
         const existe= this.tiendasUsuario.some(t => t.id === asignacion.id);
@@ -121,8 +121,7 @@ export class AdminDashboard implements OnInit {
     if (!this.usuarioEncontrado) return;
     this.adminDashboardService.updateUsuario(this.usuarioEncontrado.id, this.usuarioEncontrado)
       .subscribe(() => {
-        // Actualización ya se reflejará por SignalR, 
-        // pero opcionalmente puedes refrescar manual:
+       
         const index = this.usuarios.findIndex(u => u.id === this.usuarioEncontrado?.id);
         if (index !== -1) {
           this.usuarios[index] = { ...this.usuarioEncontrado };
@@ -131,7 +130,7 @@ export class AdminDashboard implements OnInit {
   }
 
   editarUsuario(u: any) {
-  // Clonamos el usuario para no modificar directamente la lista
+  
   this.usuarioEncontrado = { ...u };
   }
 
