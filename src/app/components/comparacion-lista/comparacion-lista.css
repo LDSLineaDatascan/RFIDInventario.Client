@@ -1,54 +1,92 @@
-/* ------------------------
-   TÍTULO
------------------------- */
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #2c3e50;
-  font-size: 1.8rem;
-  font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
+/* --- Contenedor general --- */
+.container-fluid {
+  max-width: 1200px;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #212529;
 }
 
-/* ------------------------
-   TABLA
------------------------- */
-table {
-  width: 80%;
-  margin: 0 auto;
-  border-collapse: collapse;
-  margin-top: 1rem;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  background-color: #fff;
-  border-radius: 8px;
+/* --- Card principal --- */
+.categoria-card {
+  border-radius: 18px !important;
+  background: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.categoria-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* --- Encabezado --- */
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* --- Selector --- */
+.tienda-select {
+  min-width: 200px;
+  max-width: 280px;
+}
+
+/* --- Botones --- */
+.btn {
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+/* --- Tabla --- */
+.table thead {
+  background-color: #032f7d !important;
+}
+
+.table thead th {
+  background-color: #032f7d !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: #ffffff !important;
+  letter-spacing: 0.5px;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f4f8ff;
+  transform: translateY(-1px);
+  transition: all 0.25s ease;
+}
+
+/* --- Barra de progreso --- */
+.progress-container {
+  background-color: #e9ecef;
+  border-radius: 10px;
+  height: 22px;
   overflow: hidden;
 }
 
-th, td {
-  padding: 12px 16px;
-  text-align: left;
-  border-bottom: 1px solid #ccc;
-}
-
-th {
-  background-color: #032f7d;
+.progress-bar {
+  background-color: #0177fc;
   color: white;
-  font-weight: bold;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  height: 100%;
+  transition: width 0.4s ease;
 }
 
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-tr:hover {
-  background-color: #e1e1e1;
-  transition: background-color 0.3s;
-}
-
-/* ------------------------
-   ESTADO
------------------------- */
+/* --- Estados --- */
 .coincide {
   color: green;
   font-weight: bold;
@@ -62,121 +100,24 @@ tr:hover {
   font-weight: bold;
 }
 
-/* ------------------------
-   SELECTOR DE TIENDAS
------------------------- */
-.selector-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-.selector-container label {
-  margin-right: 10px;
-  font-size: 1.1rem;
-  color: #2c3e50;
-  font-weight: 500;
-}
-
-.selector-container select {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background-color: #fdfdfd;
-  font-size: 1rem;
-  color: #2c3e50;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', sans-serif;
-  transition: border-color 0.3s ease;
-}
-
-.selector-container select:focus {
-  outline: none;
-  border-color: #0177fc;
-  box-shadow: 0 0 5px rgba(170, 214, 62, 0.5);
-  background-color: #fff;
-}
-
-/* ------------------------
-   MENSAJE DE DATOS VACÍOS
------------------------- */
-p {
-  text-align: center;
+/* --- Sin datos --- */
+.text-muted {
   font-style: italic;
-  color: #999;
+  font-size: 0.95rem;
+  color: #888 !important;
 }
 
-/* ------------------------
-   PROGRESO DE LECTURA
------------------------- */
-.progreso-container {
-  width: 80%;
-  margin: 20px auto;
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 1rem;
-  color: #2c3e50;
-}
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .categoria-card {
+    border-radius: 14px !important;
+  }
 
-.barra-progreso {
-  width: 100%;
-  background-color: #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-  height: 22px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
-  margin-top: 5px;
-}
+  .tienda-select {
+    width: 100%;
+  }
 
-.barra-relleno {
-  height: 100%;
-  background-color: #0177fc;
-  color: white;
-  text-align: center;
-  line-height: 22px;
-  font-weight: bold;
-  transition: width 0.5s ease-in-out;
-}
-
-/* ------------------------
-   BOTONES BASE
------------------------- */
-button,
-.btn,
-.btn-archivo {
-  background-color: #c9c9c9;
-  border: none;
-  padding: 6px 12px;      /* mismo tamaño que en categoría */
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.9rem;      /* mismo tamaño de fuente */
-  line-height: 1.2;       /* misma altura */
-  transition: background-color 0.3s ease;
-}
-
-button:hover,
-.btn:hover,
-.btn-archivo:hover {
-  background-color: #0177fc;
-  color: #fff;
-}
-
-/* ------------------------
-   CONTENEDOR DE BOTONES
------------------------- */
-.botones-container {
-  width: 80%;
-  margin: 0 auto 20px auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.botones-derecha {
-  display: flex;
-  gap: 10px;
+  .table thead th {
+    font-size: 0.8rem;
+  }
 }
