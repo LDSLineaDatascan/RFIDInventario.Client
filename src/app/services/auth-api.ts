@@ -56,7 +56,7 @@ export class AuthApi {
       //code=fode flow microsoft
       if (href.includes("code=")) {
         try {
-          // configurar para microsoft y procesar code flow
+          // configuracion microsoft y code flow
           this.oauthService.configure(this.getMicrosoftConfig());
           await this.oauthService.loadDiscoveryDocument();
           // intercambiar code por token

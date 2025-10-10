@@ -53,13 +53,13 @@ export class AdminDashboard implements OnInit {
       console.log("Usuario eliminado:", id)
     });
 
-    //4. Crear usuario
+    //4. Cro usuario
     this.signalRService.escucharEvento('UsuarioCreado',(usuario: any) => {
       this.usuarios.push(usuario);
       console.log("Usuario creado:", usuario)
     });
 
-    //5. Actualizar usuario
+    //5. Actualizousuario
     this.signalRService.escucharEvento('UsuarioActualizado',(usuario: any) => {
       const index = this.usuarios.findIndex(u => u.id === usuario.id);
       if (index !== -1) {
@@ -111,9 +111,28 @@ export class AdminDashboard implements OnInit {
     });
   }
 
-  eliminarUsuario(id: number) {
+  /*eliminarUsuario(id: number) {
     this.adminDashboardService.deleteUsuario(id).subscribe(() => {
       this.usuarios = this.usuarios.filter(x => x.id !== id);
+    });
+  }*/
+  eliminarUsuario(id: number) {
+    if (!confirm("¿Está seguro de eliminar este usuario?")) return;
+    this.adminDashboardService.deleteUsuario(id).subscribe({
+      next: () => {
+        this.usuarios = this.usuarios.filter(x => x.id !== id); 
+        alert("Usuario eliminado exitosamente.");
+      },
+      error: (err) => {
+        console.error("Error al eliminar usuario:", err);
+
+        //detectar error foreing key
+        if(err.error.includes("FK_USUARIOS_TIENDAS_USUARIOS")){
+          alert("No se puede eliminar el usuario porque tiene tiendas asignadas. Primero desasigne las tiendas.");
+        }else{
+          alert("Error al eliminar usuario. Usuario asociado a tiendas.");
+        }
+      }
     });
   }
 
