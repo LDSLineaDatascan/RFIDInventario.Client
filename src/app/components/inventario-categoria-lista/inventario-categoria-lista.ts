@@ -84,8 +84,8 @@ export class InventarioCategoriasComponent implements OnInit {
   
 }*/
 
-ngOnInit(): void {
-  // 1. loe idTienda desde la URL queryParams o paramMap
+/*ngOnInit(): void {
+  // 1. loe idTienda desde la url queryParams o paramMap
   this.route.queryParams.subscribe(params => {
     const tiendaParam = params['idTienda'];
     if (tiendaParam) {
@@ -139,7 +139,98 @@ ngOnInit(): void {
       };
     }
   });
+}*///oct 14
+ngOnInit(): void {
+  // 1. leo idTienda desde la url queryParams o paramMap
+  this.route.queryParams.subscribe(params => {
+    const tiendaParam = params['idTienda'];
+    if (tiendaParam) {
+      this.idTienda = tiendaParam;
+      console.log('🔹 idTienda desde queryParams:', this.idTienda);
+    }
+  });
+
+  this.route.paramMap.subscribe(params => { 
+    const tiendaParam = params.get('idTienda');
+    if (tiendaParam) {
+      this.idTienda = tiendaParam;
+      console.log('idTienda desde paramMap:', this.idTienda);
+    }
+  });
+
+  // 2. obtengo tiendas y idTienda si no viene por URL
+  this.tiendaApi.obtenerTiendas().subscribe(data => {
+    this.tiendas = data;
+
+    //filtrado rol del usuario
+    const rawSesion = localStorage.getItem('usuarioSesion');
+    const usuarioSesion = rawSesion ? JSON.parse(rawSesion) : null;
+    const rol = usuarioSesion?.rol;
+
+    if (rol === 'User') {
+      const asignadas = (usuarioSesion?.tiendasAsignadas || []).map((t: any) => t.codigo ?? t.tiendaCodigo);
+      if (!asignadas || asignadas.length === 0) {
+        console.warn('Usuario sin tiendas asignadas');
+        this.tiendas = [];
+        this.idTienda = '';
+        return; // no carga resumen
+      }
+      // filtro tiendas visibles
+      this.tiendas = this.tiendas.filter(t => asignadas.includes(t.codigo));
+
+      // si el idTienda actual no pertenece a sus asignadas
+      if (this.idTienda && !asignadas.includes(this.idTienda)) {
+        console.warn('idTienda no autorizada, usando primera asignada');
+        this.idTienda = this.tiendas.length ? this.tiendas[0].codigo : '';
+      }
+
+      // si no hay idTienda, uso la primera asignada
+      if (!this.idTienda && this.tiendas.length > 0) {
+        this.idTienda = this.tiendas[0].codigo;
+      }
+    } else {
+      // Admin u otros roles
+      if (this.tiendas.length > 0 && !this.idTienda) {
+        this.idTienda = this.tiendas[0].codigo;
+      }
+    }
+      // fin filtrado
+
+    if (this.tiendas.length > 0) {
+      // Si no recibo por url, uso la primera tienda por defecto
+      if (!this.idTienda) {
+        this.idTienda = this.tiendas[0].codigo;
+      }
+
+      console.log('tienda seleccionada final:', this.idTienda);
+      this.obtenerResumen();
+
+      // 3. empiezo conexión SignalR solo una vez
+      this.signalRService.iniciarConexion();
+
+      //  evento InventarioActualizado
+      this.signalRService.escucharEvento('InventarioActualizado', () => {
+        console.log('Evento recibido: InventarioActualizado');
+        this.obtenerResumen(); 
+      });
+
+      // 4.  evento 'reinicio por tienda
+      this.signalRService.escucharEvento('Reiniciar', (tiendaId: string) => {
+        if (tiendaId === this.idTienda) {
+          console.log('🔄 Reiniciando desde SignalR');
+          this.obtenerResumen();
+        }
+      });
+
+      // 5. También actualiza datos si se recibe el trigger directo
+      this.signalRService.onActualizarDatos = () => {
+        console.log('🔄 Actualizando datos desde SignalR');
+        this.obtenerResumen();
+      };
+    }
+  });
 }
+
 
 
   obtenerResumen(): void {

@@ -28,18 +28,59 @@ export class ComparacionLista implements OnInit {
     private router: Router, private location: Location,) {}
 
   ngOnInit(): void {
-    //this.cargarTiendas();
-    this.route.queryParams.subscribe(params => {
+  // 1️.obtengo usuario del localStorage
+  const usuarioStr = localStorage.getItem('usuarioSesion');
+  let usuario = null;
+  if (usuarioStr) {
+    try {
+      usuario = JSON.parse(usuarioStr);
+      console.log('👤 Usuario de sesión:', usuario);
+    } catch (e) {
+      console.error('Error al parsear usuarioSesion:', e);
+    }
+  }
+
+  // 2️. leo tienda en queryParams
+  this.route.queryParams.subscribe(params => {
     const tiendaParam = params['idTienda'];
-    this.cargarTiendas(tiendaParam);
+
+    // 3. cargo segun rol
+    this.tiendaApi.obtenerTiendas().subscribe({
+      next: (data) => {
+        let tiendasFiltradas = data;
+
+        // if user muestro las asigandas
+        if (usuario && usuario.rol === 'User' && usuario.tiendasAsignadas?.length > 0) {
+          const codigosAsignados = usuario.tiendasAsignadas.map((t: any) => t.codigo);
+          tiendasFiltradas = data.filter(t => codigosAsignados.includes(t.codigo));
+          console.log('🏬 Tiendas filtradas por rol User:', tiendasFiltradas);
+        }
+
+        this.tiendas = tiendasFiltradas;
+
+        // 4️. selecciono tioenda desde url o primera disponible segun el user
+        if (this.tiendas.length > 0) {
+          this.idTienda = tiendaParam || this.tiendas[0].codigo;
+          this.obtenerComparacion();
+        } else {
+          this.error = 'No tienes tiendas asignadas.';
+          console.warn('⚠️ Sin tiendas disponibles para este usuario.');
+        }
+      },
+      error: (err) => {
+        this.error = 'Error al cargar las tiendas';
+        console.error(err);
+      }
+    });
   });
 
-
-    this.signalRService.onActualizarDatos = () => {
-    console.log("Actualizando datos de comparación...");
-    this.obtenerComparacion();  // <--- Método que refresca los datos
+  // 5. eventos de SignalR
+  this.signalRService.onActualizarDatos = () => {
+    console.log("🔄 Actualizando datos de comparación...");
+    this.obtenerComparacion();
   };
-  }
+}
+
 
   /*cargarTiendas(): void {
     this.tiendaApi.obtenerTiendas().subscribe({
