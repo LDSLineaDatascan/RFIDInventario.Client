@@ -23,15 +23,15 @@ export class UserDashboard implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    // 1️⃣ Recuperar usuario de sesión
+  /*ngOnInit(): void {
+    // Recupera usuario de sesión
     const usuarioSesion = localStorage.getItem("usuarioSesion");
     if (usuarioSesion) {
       this.usuarioSesion = JSON.parse(usuarioSesion);
       console.log("Usuario de sesión:", this.usuarioSesion);
     }
 
-    // 2️⃣ Obtener tiendas asignadas al usuario logueado
+    // Obtengo tiendas asignadas al usuario 
     if (this.usuarioSesion) {
       this.userDashboardService
         .getTiendasPorUsuario(this.usuarioSesion.id)
@@ -40,7 +40,38 @@ export class UserDashboard implements OnInit {
           console.log("Tiendas asignadas:", data);
         });
     }
+  }*/
+
+    ngOnInit(): void {
+  // Recupero usuario de sesión
+  const usuarioSesion = localStorage.getItem("usuarioSesion");
+  if (usuarioSesion) {
+    this.usuarioSesion = JSON.parse(usuarioSesion);
+    console.log("Usuario de sesión:", this.usuarioSesion);
   }
+
+  // Obtengo tiendas asignadas al usuario 
+  if (this.usuarioSesion) {
+    this.userDashboardService
+      .getTiendasPorUsuario(this.usuarioSesion.id)
+      .subscribe((data) => {
+        this.tiendasAsignadas = data;
+        console.log("Tiendas asignadas:", data);
+
+        // agrego tiendas asignadas
+        this.usuarioSesion.tiendasAsignadas = this.tiendasAsignadas.map(t => ({
+          codigo: t.tiendaCodigo,
+          rolAsignado: t.rolAsignado
+        }));
+
+        // guardo usuario en localstorage
+        localStorage.setItem("usuarioSesion", JSON.stringify(this.usuarioSesion));
+
+        console.log("Usuario actualizado en localStorage nuevo:", this.usuarioSesion);
+      });
+  }
+}
+
 
   logout() {
     this.authApi.logout();

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // 👈 importar FormsModule
+import { FormsModule } from '@angular/forms'; 
 import { InventarioCategoriaApi, ResumenCategoria } from '../../services/inventario-categoria-api';
 import { TiendaApi, Tienda } from '../../services/tienda-api';
 import { ComparacionInventario } from '../../services/comparacion-api';
@@ -73,7 +73,7 @@ export class InventarioCategoriasComponent implements OnInit {
 
       /*this.signalRService.escucharEvento('Reiniciar', (idTienda: string) => {
         if (idTienda === this.idTienda) {
-      console.log('Recargando inventario por categorías...');
+      console.log('🔄 Recargando inventario por categorías...');
       this.obtenerResumen();
     }
   });----
@@ -85,7 +85,7 @@ export class InventarioCategoriasComponent implements OnInit {
 }*/
 
 ngOnInit(): void {
-  // 1. leer idTienda deURL
+  // 1. loe idTienda desde la URL queryParams o paramMap
   this.route.queryParams.subscribe(params => {
     const tiendaParam = params['idTienda'];
     if (tiendaParam) {
@@ -98,33 +98,33 @@ ngOnInit(): void {
     const tiendaParam = params.get('idTienda');
     if (tiendaParam) {
       this.idTienda = tiendaParam;
-      console.log('🔹 idTienda desde paramMap:', this.idTienda);
+      console.log('idTienda desde paramMap:', this.idTienda);
     }
   });
 
-  // 2.tiendas y establecer idTienda 
+  // 2. obtengo tiendas y idTienda si no viene por URL
   this.tiendaApi.obtenerTiendas().subscribe(data => {
     this.tiendas = data;
 
     if (this.tiendas.length > 0) {
-      //no se recibió por URL, usar la primera tienda por defecto
+      // Si no reecibo pr  URL, uso la primera tienda por defecto
       if (!this.idTienda) {
         this.idTienda = this.tiendas[0].codigo;
       }
 
-      console.log('✅ Tienda seleccionada final:', this.idTienda);
+      console.log('tienda seleccionada final:', this.idTienda);
       this.obtenerResumen();
 
-      // 3. Inicio conexión SignalR solo una vez
+      // 3. empiezo conexión SignalR solo una vez
       this.signalRService.iniciarConexion();
 
-      //evento InventarioActualizado
+      //  evento InventarioActualizado
       this.signalRService.escucharEvento('InventarioActualizado', () => {
         console.log('Evento recibido: InventarioActualizado');
         this.obtenerResumen(); 
       });
 
-      // 4. Reiniciar
+      // 4.  evento 'reinicio por tienda
       this.signalRService.escucharEvento('Reiniciar', (tiendaId: string) => {
         if (tiendaId === this.idTienda) {
           console.log('🔄 Reiniciando desde SignalR');
@@ -132,7 +132,7 @@ ngOnInit(): void {
         }
       });
 
-      // 5. actualiza datos trgger
+      // 5. También actualiza datos si se recibe el trigger directo
       this.signalRService.onActualizarDatos = () => {
         console.log('🔄 Actualizando datos desde SignalR');
         this.obtenerResumen();
@@ -147,7 +147,7 @@ ngOnInit(): void {
       this.resumenCategorias = resumen;
       this.detalleCategoria = [];
       this.calcularProgresoGeneral();
-      this.ultimaActualizacion = new Date();
+      this.ultimaActualizacion = new Date(); // Actualiza la fecha de la última actualización
       console.log('Fecha Actualización:', this.ultimaActualizacion);
     });
   }
@@ -169,10 +169,10 @@ ngOnInit(): void {
     return;
   }
 
-  //encabezados
+  // encabezados
   const encabezados = ['Categoría', 'Stock Teórico', 'Stock Físico', 'Faltantes','Sobrantes', 'Adicionales','Progreso %'];
 
-  // Converción datos a filas
+  // datos a filas
   const filas = this.resumenCategorias.map(cat => [
     cat.categoria,
     cat.teorico,
