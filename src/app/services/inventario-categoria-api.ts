@@ -147,7 +147,7 @@ export class InventarioCategoriaApi {
 
 
   //private apiUrl = 'http://localhost:5097/Inventario';
-  private apiUrl = 'http://localhost:5097/Inventario';
+  private apiUrl = 'http://localhost:93/Inventario';
 
 
   cargarInventarioTeorico() {

@@ -15,7 +15,7 @@ export interface InventarioTeorico {
 @Injectable({ providedIn: 'root' })
 export class InventarioApi {
   //private baseUrl = 'https://localhost:7293/inventario';
-  private baseUrl = 'http://localhost:5097/inventario';
+  private baseUrl = 'http://localhost:93/inventario';
 
   constructor(private http: HttpClient) {}
 

@@ -30,7 +30,7 @@ export class SignalRService{
             }
 
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl('http://localhost:5097/notificationHub')
+            .withUrl('http://localhost:93/notificationHub')
             .withAutomaticReconnect()
             .build();
 

@@ -13,7 +13,7 @@ export interface TagTienda{
 @Injectable({ providedIn: 'root' })
 export class TagApi{
     //private baseUrl: string = 'https://localhost7293';
-    private baseUrl = 'http://localhost:5097/tag';
+    private baseUrl = 'http://localhost:93/tag';
 
     constructor(private http: HttpClient) {}
 

@@ -8,7 +8,7 @@ import { SignalRService } from './signalr-api';
 })
 export class AdminDashboardService {
 
-  private apiUrl = 'http://localhost:5097/api/usuarios';
+  private apiUrl = 'http://localhost:93/api/usuarios';
 
   constructor(private http: HttpClient) { }
 
@@ -38,11 +38,11 @@ export class AdminDashboardService {
 
   //asignar tiedas
   getTiendasPorUsuario(usuarioId: number): Observable<any[]> {
-  return this.http.get<any[]>(`http://localhost:5097/api/UsuarioTienda/usuario/${usuarioId}`);
+  return this.http.get<any[]>(`http://localhost:93/api/UsuarioTienda/usuario/${usuarioId}`);
 }
 
 asignarTienda(usuarioId: number, tiendaCodigo: string, rol: string, asignadoPorId: number): Observable<any> {
-  return this.http.post<any>(`http://localhost:5097/api/UsuarioTienda/asignar`, {
+  return this.http.post<any>(`http://localhost:93/api/UsuarioTienda/asignar`, {
     usuarioId,
     tiendaCodigo,
     rolAsignado: rol,
@@ -52,7 +52,7 @@ asignarTienda(usuarioId: number, tiendaCodigo: string, rol: string, asignadoPorI
 
 desasignarTienda(usuarioCorreo: string, tiendaCodigo: string): Observable<any> {
   return this.http.delete<any>(
-    `http://localhost:5097/api/UsuarioTienda/correo?correoUsuario=${usuarioCorreo}&tiendaCodigo=${tiendaCodigo}`
+    `http://localhost:93/api/UsuarioTienda/correo?correoUsuario=${usuarioCorreo}&tiendaCodigo=${tiendaCodigo}`
   );
 }
 }
