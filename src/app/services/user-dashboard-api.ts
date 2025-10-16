@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserDashboardServices {
-  private apiUrl = 'http://localhost:93/api/UsuarioTienda'; // reutiliza controlador existente
+  private apiUrl = 'http://localhost:80/api/UsuarioTienda'; // reutiliza controlador existente
 
   constructor(private http: HttpClient) {}
 

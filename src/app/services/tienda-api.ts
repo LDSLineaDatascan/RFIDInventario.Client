@@ -13,7 +13,7 @@ export interface Tienda{
 export class TiendaApi {
   //private baseUrl = 'https://localhost:7293';
   //private baseUrl = 'http://localhost:5097';
-  private baseUrl = 'http://localhost:93';
+  private baseUrl = 'http://localhost:80';
 
   constructor(private http: HttpClient) {}  
 

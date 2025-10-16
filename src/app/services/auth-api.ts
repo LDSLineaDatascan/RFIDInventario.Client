@@ -114,7 +114,9 @@ export class AuthApi {
     //this.router.navigate(["/productos"]);
 
     //Llamo al backend para validar o registrar el suario
-    fetch("http://localhost:93/api/Usuarios/Login-federado", {
+    fetch("http://localhost:80/api/Usuarios/Login-federado", {
+    //fetch(`${window.location.origin}/api/Usuarios/Login-federado`, {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json"
