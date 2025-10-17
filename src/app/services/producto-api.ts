@@ -15,7 +15,8 @@ export interface Producto
 export class ProductoApi {
 
   //private apiUrl = 'https://localhost:7293/producto';
-  private apiUrl = 'http://localhost:80/producto';
+  //private apiUrl = 'http://localhost:80/producto';
+  private apiUrl = 'http://rfid.local.io:80/producto';  
 
   constructor(private http: HttpClient) { }
 

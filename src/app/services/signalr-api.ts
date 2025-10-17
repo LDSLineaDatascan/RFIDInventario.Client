@@ -30,7 +30,8 @@ export class SignalRService{
             }
 
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl('http://localhost:80/notificationHub')
+            //.withUrl('http://localhost:80/notificationHub')
+            .withUrl('http://rfid.local.io:80/notificationHub')
             .withAutomaticReconnect()
             .build();
 

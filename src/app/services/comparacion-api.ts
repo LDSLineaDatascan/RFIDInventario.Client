@@ -16,7 +16,8 @@ export interface ComparacionInventario {
 export class ComparacionApi {
   //private baseUrl = 'https://localhost:7293/inventario/comparacion';
   //private baseUrl = 'http://localhost:5097/inventario/comparacion';
-  private baseUrl = 'http://localhost:80/inventario/comparacion';
+  //private baseUrl = 'http://localhost:80/inventario/comparacion';
+  private baseUrl = 'http://rfid.local.io:80/inventario/comparacion';
 
   constructor(private http: HttpClient) {}
 

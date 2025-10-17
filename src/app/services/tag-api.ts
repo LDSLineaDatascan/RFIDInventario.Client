@@ -13,7 +13,8 @@ export interface TagTienda{
 @Injectable({ providedIn: 'root' })
 export class TagApi{
     //private baseUrl: string = 'https://localhost7293';
-    private baseUrl = 'http://localhost:80/tag';
+    //private baseUrl = 'http://localhost:80/tag';
+    private baseUrl = 'http://rfid.local.io:80/tag';
 
     constructor(private http: HttpClient) {}
 

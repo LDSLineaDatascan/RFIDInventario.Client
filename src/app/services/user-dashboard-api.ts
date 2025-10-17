@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserDashboardServices {
-  private apiUrl = 'http://localhost:80/api/UsuarioTienda'; // reutiliza controlador existente
+  //private apiUrl = 'http://localhost:80/api/UsuarioTienda'; // reutiliza controlador existente
+  private apiUrl = 'http://rfid.local.io:80/api/UsuarioTienda';
 
   constructor(private http: HttpClient) {}
 

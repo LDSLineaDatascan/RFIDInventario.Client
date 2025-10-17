@@ -15,7 +15,9 @@ export interface InventarioTeorico {
 @Injectable({ providedIn: 'root' })
 export class InventarioApi {
   //private baseUrl = 'https://localhost:7293/inventario';
-  private baseUrl = 'http://localhost:80/inventario';
+  //private baseUrl = 'http://localhost:80/inventario';
+    private baseUrl = 'http://rfid.local.io:80/inventario';
+
 
   constructor(private http: HttpClient) {}
 
