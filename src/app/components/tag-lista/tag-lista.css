@@ -13,6 +13,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+/* --- Efecto hover suave --- */
 .tag-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
@@ -25,6 +26,7 @@
   display: flex;
 }
 
+/* -- Input --- */
 .input-group .form-control {
   border: none;
   border-radius: 1rem 0 0 1rem !important;
@@ -38,6 +40,7 @@
   color: #999;
 }
 
+/*-- Botón --- */
 .input-group .btn {
   border-radius: 0 1rem 1rem 0 !important;
   font-weight: 500;
@@ -48,7 +51,7 @@
   padding-right: 1.5rem;
 }
 
-/* --- Encabezado de la tabla --- */
+/* --tabla --- */
 .table thead {
   background-color: #032f7d !important;
 }

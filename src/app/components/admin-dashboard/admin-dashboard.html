@@ -3,7 +3,7 @@
   <!-- Header -->
   <h2 class="mb-4 fw-bold">Panel de Administración</h2>
 
-  <!-- Cards resumen y sesión en la misma fila -->
+  <!-- Cards resumen - sesión en misma fila -->
   <div class="row g-4 mb-4 align-items-stretch">
     <!-- Card Sesión + Logout -->
     <div class="col-12 col-md-6" *ngIf="usuarioSesion">
@@ -216,8 +216,11 @@
         <form (ngSubmit)="asignarTienda()" #asignarForm="ngForm" class="row g-2 align-items-end">
           <div class="col-md-5">
             <label class="form-label">Código tienda</label>
-            <input type="text" class="form-control" [(ngModel)]="nuevaTiendaCodigo" name="tiendaCodigo" required>
+            <input type="text" class="form-control" 
+            [(ngModel)]="nuevaTiendaCodigo" name="tiendaCodigo" required
+            placeholder="Ingrese código de tienda">
           </div>
+
           <div class="col-md-5">
             <label class="form-label">Rol</label>
             <select class="form-select" [(ngModel)]="nuevoRolAsignado" name="rol" required>

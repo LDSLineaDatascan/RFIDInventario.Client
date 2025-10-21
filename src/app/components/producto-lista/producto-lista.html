@@ -48,6 +48,10 @@
       <div *ngIf="productosFiltrados.length === 0" class="text-center text-muted mt-3">
         No hay productos disponibles.
       </div>
+      <!-- Error -->
+      <div *ngIf="error" class="text-danger text-center mt-3">
+        {{ error }}
+      </div>
     </div>
   </div>
 </div>

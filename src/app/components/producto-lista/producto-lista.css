@@ -11,16 +11,16 @@
   background: #ffffff;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  /*transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
   transform-style: preserve-3d;
-  will-change: transform;
+  will-change: transform;*/
 }
 
 /* --- Efecto movimiento 3D suave (suave y reducido) --- */
 .tienda-card:hover {
-  transform: translateY(-6px) rotateX(2deg) rotateY(2deg);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  /*cursor: pointer;*/
 }
 
 /* --- Buscador completo --- */

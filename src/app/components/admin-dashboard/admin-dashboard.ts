@@ -26,7 +26,12 @@ export class AdminDashboard implements OnInit {
   nuevaTiendaCodigo: string="";
   nuevoRolAsignado: string ="";
 
+  //filtro usuario
   usuariosFiltrados: any[]=[];
+
+  //filtro tiendas
+  tiendasFiltradas: any[] = [];
+  filtroTiendaCodigo: string = '';
 
   constructor(
     private adminDashboardService: AdminDashboardService,
@@ -220,9 +225,7 @@ export class AdminDashboard implements OnInit {
   u.correo.toLowerCase().includes(filtro) 
   //u.nombre.toLowerCase().includes(filtro) 
   //u.rol.toLowerCase().includes(filtro)
-);
+  );
 }
-
-  
 
 }
