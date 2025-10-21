@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Inject } from "@angular/core";
+import { environment } from "../../environments/environment";
 
 export interface Tienda{
     codigo: string;
@@ -13,7 +14,9 @@ export interface Tienda{
 export class TiendaApi {
   //private baseUrl = 'https://localhost:7293';
   //private baseUrl = 'http://localhost:5097';
-  private baseUrl = 'http://localhost:5097';
+ // private baseUrl = 'http://localhost:5097';
+ private baseUrl = `${environment.API_URL}`;
+  
 
   constructor(private http: HttpClient) {}  
 

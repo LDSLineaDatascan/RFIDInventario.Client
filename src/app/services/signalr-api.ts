@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { environment } from '../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 export class SignalRService{
@@ -30,7 +31,7 @@ export class SignalRService{
             }
 
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl('http://localhost:5097/notificationHub')
+            .withUrl(`${environment.API_URL}/notificationHub`)
             .withAutomaticReconnect()
             .build();
 

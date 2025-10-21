@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from '@angular/common/http';
+import { environment } from "../../environments/environment";
 
 
 export interface TagTienda{
@@ -13,7 +14,8 @@ export interface TagTienda{
 @Injectable({ providedIn: 'root' })
 export class TagApi{
     //private baseUrl: string = 'https://localhost7293';
-    private baseUrl = 'http://localhost:5097/tag';
+    //private baseUrl = 'http://localhost:5097/tag';
+    private baseUrl = `${environment.API_URL}/tag`;
 
     constructor(private http: HttpClient) {}
 

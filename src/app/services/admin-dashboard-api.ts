@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { SignalRService } from './signalr-api';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminDashboardService {
 
-  private apiUrl = 'http://localhost:5097/api/usuarios';
+  private apiUrl = `${environment.API_URL}/api/usuarios`;
+  
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    console.log("API URL:", this.apiUrl);
+   }
 
   getUsuarios(): Observable<any> {
     return this.http.get<any[]>(this.apiUrl);
@@ -38,11 +43,11 @@ export class AdminDashboardService {
 
   //asignar tiedas
   getTiendasPorUsuario(usuarioId: number): Observable<any[]> {
-  return this.http.get<any[]>(`http://localhost:5097/api/UsuarioTienda/usuario/${usuarioId}`);
+  return this.http.get<any[]>(`${environment.API_URL}/api/UsuarioTienda/usuario/${usuarioId}`);
 }
 
 asignarTienda(usuarioId: number, tiendaCodigo: string, rol: string, asignadoPorId: number): Observable<any> {
-  return this.http.post<any>(`http://localhost:5097/api/UsuarioTienda/asignar`, {
+  return this.http.post<any>(`${environment.API_URL}/api/UsuarioTienda/asignar`, {
     usuarioId,
     tiendaCodigo,
     rolAsignado: rol,
@@ -52,7 +57,9 @@ asignarTienda(usuarioId: number, tiendaCodigo: string, rol: string, asignadoPorI
 
 desasignarTienda(usuarioCorreo: string, tiendaCodigo: string): Observable<any> {
   return this.http.delete<any>(
-    `http://localhost:5097/api/UsuarioTienda/correo?correoUsuario=${usuarioCorreo}&tiendaCodigo=${tiendaCodigo}`
+    `${environment.API_URL}/api/UsuarioTienda/correo?correoUsuario=${usuarioCorreo}&tiendaCodigo=${tiendaCodigo}`
+  ).pipe(
+    tap(() => console.log("Desasignando tienda:", usuarioCorreo, tiendaCodigo))
   );
 }
 }

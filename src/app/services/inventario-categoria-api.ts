@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ComparacionApi, ComparacionInventario } from './comparacion-api';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 
 export interface ResumenCategoria {
@@ -147,7 +148,8 @@ export class InventarioCategoriaApi {
 
 
   //private apiUrl = 'http://localhost:5097/Inventario';
-  private apiUrl = 'http://localhost:5097/Inventario';
+  //private apiUrl = 'http://localhost:5097/Inventario';
+  private apiUrl = `${environment.API_URL}/Inventario`;
 
 
   cargarInventarioTeorico() {

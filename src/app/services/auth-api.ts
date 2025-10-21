@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { OAuthService, AuthConfig } from "angular-oauth2-oidc";
 import { Router } from "@angular/router";
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: "root"
@@ -114,7 +116,7 @@ export class AuthApi {
     //this.router.navigate(["/productos"]);
 
     //Llamo al backend para validar o registrar el suario
-    fetch("http://localhost:5097/api/Usuarios/Login-federado", {
+    fetch(`${environment.API_URL}/api/Usuarios/Login-federado`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -124,6 +126,7 @@ export class AuthApi {
       .then(response => response.json())
       .then(usuario =>{
         console.log("Usuario registrado/validado en backend:", usuario);
+        console.log("environment auth:", environment.API_URL);
 
         if(usuario.rol === "NoAutorizado"){
           alert("Usuario no autorizado. Contacte con el administrador.");
