@@ -1,6 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { AuthApi } from "../../services/auth-api";
 import { CommonModule } from "@angular/common";
+import { AppConfigService } from "../../services/app-config-service";
 
 @Component({
   selector: "app-auth",
@@ -9,8 +10,13 @@ import { CommonModule } from "@angular/common";
   imports: [CommonModule],
   standalone: true
 })
-export class Auth {
-  constructor(private auth: AuthApi) {}
+export class Auth implements OnInit{
+  constructor(private auth: AuthApi, private appConfig: AppConfigService) {}
+
+  ngOnInit(): void {
+    const apiUrl = this.appConfig.get<string>('API_URL', 'No configurada');
+    console.log('API_URL desde Auth con config:', apiUrl);
+  }
 
   loginGoogle(): void {
     this.auth.loginGoogle();

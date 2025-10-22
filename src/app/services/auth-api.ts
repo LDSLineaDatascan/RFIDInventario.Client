@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { OAuthService, AuthConfig } from "angular-oauth2-oidc";
 import { Router } from "@angular/router";
 import { environment } from '../../environments/environment';
+import { AppConfigService } from "./app-config-service";
 
 
 @Injectable({
@@ -10,7 +11,9 @@ import { environment } from '../../environments/environment';
 export class AuthApi {
   constructor(
     private oauthService: OAuthService,
-    private router: Router
+    private router: Router,
+    //config
+    private appConfigService: AppConfigService
   ) {
     // procesar callback si viene de un proveedor    
     this.handleAuthCallback();
@@ -115,8 +118,14 @@ export class AuthApi {
     //redicreciion
     //this.router.navigate(["/productos"]);
 
+    //confguro la API_URL desde app-config
+    const apiUrl = this.appConfigService.get<string>('API_URL', environment.API_URL);
+    const baseUrl = apiUrl || environment.API_URL;
+
+    console.log("API_URL configurada en environment Config-app:", baseUrl);
+
     //Llamo al backend para validar o registrar el suario
-    fetch(`${environment.API_URL}/api/Usuarios/Login-federado`, {
+    fetch(`${baseUrl}/api/Usuarios/Login-federado`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
