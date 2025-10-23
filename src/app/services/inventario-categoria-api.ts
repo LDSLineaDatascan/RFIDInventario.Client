@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { ComparacionApi, ComparacionInventario } from './comparacion-api';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { AppConfigService } from './app-config-service';
+
 
 
 export interface ResumenCategoria {
@@ -17,10 +19,17 @@ export interface ResumenCategoria {
   
 }
 
+
+
 @Injectable({ providedIn: 'root' })
 export class InventarioCategoriaApi {
-  constructor(private comparacionApi: ComparacionApi, private http: HttpClient) {}
-  
+  //private apiUrl = `${environment.API_URL}/Inventario`;
+  private apiUrl  = '';
+  constructor(private comparacionApi: ComparacionApi, private http: HttpClient, private appConfigService: AppConfigService) {
+    const baseUrl = this.appConfigService.get<string>('API_URL', `${environment.API_URL}`);
+    this.apiUrl= `${baseUrl}/inventario`;
+    console.log("API URL Inventario con config:", this.apiUrl);
+  }
 
   /*obtenerResumenPorCategoria(idTienda: string): Observable<ResumenCategoria[]> {
     return new Observable(subscriber => {
@@ -149,7 +158,7 @@ export class InventarioCategoriaApi {
 
   //private apiUrl = 'http://localhost:5097/Inventario';
   //private apiUrl = 'http://localhost:5097/Inventario';
-  private apiUrl = `${environment.API_URL}/Inventario`;
+  
 
 
   cargarInventarioTeorico() {

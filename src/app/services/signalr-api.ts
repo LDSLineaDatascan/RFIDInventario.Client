@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { environment } from '../../environments/environment';
+import { AppConfigService } from './app-config-service';
 
 @Injectable({providedIn: 'root'})
 export class SignalRService{
@@ -21,6 +22,11 @@ export class SignalRService{
     //Asignaciones de admin a usuario
     public onTiendaAsignada?: (asignacion: any)=> void;
     public onTiendaDesasignada?: (id: number)=>void;
+
+    constructor(private appConfigService: AppConfigService) {
+        const apiUrl = this.appConfigService.get<string>('API_URL', `${environment.API_URL}`);
+        console.log("API URL SignalR con config:", apiUrl);
+    }
     
 
     public iniciarConexion(): void {
@@ -31,7 +37,8 @@ export class SignalRService{
             }
 
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl(`${environment.API_URL}/notificationHub`)
+            //.withUrl(`${environment.API_URL}/notificationHub`)
+            .withUrl(`${this.appConfigService.get<string>('API_URL', `${environment.API_URL}`)}/notificationHub`)
             .withAutomaticReconnect()
             .build();
 

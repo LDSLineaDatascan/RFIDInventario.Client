@@ -136,6 +136,7 @@ export class AuthApi {
       .then(usuario =>{
         console.log("Usuario registrado/validado en backend:", usuario);
         console.log("environment auth:", environment.API_URL);
+        console.log("baseUrl auth config:", baseUrl);
 
         if(usuario.rol === "NoAutorizado"){
           alert("Usuario no autorizado. Contacte con el administrador.");
