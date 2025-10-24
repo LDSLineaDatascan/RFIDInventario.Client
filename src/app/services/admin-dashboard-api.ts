@@ -14,12 +14,16 @@ export class AdminDashboardService {
   private envUrl = `${environment.API_URL}/api/usuarios`;
   //config.json
   private apiUrl: string = '';
+  private apiUrlUsuarioTienda: string = '';
   
 
   constructor(private http: HttpClient, private appConfigService: AppConfigService) {
     const baseUrl = this.appConfigService.get<string>('API_URL', this.envUrl);
     this.apiUrl= `${baseUrl}/api/usuarios`;
     console.log("API URL AdminDashboard con config:", this.apiUrl);
+
+    this.apiUrlUsuarioTienda = `${baseUrl}/api/UsuarioTienda`;
+    console.log("API URL UsuarioTienda con config:", this.apiUrlUsuarioTienda);
    }
 
   getUsuarios(): Observable<any> {
@@ -49,11 +53,11 @@ export class AdminDashboardService {
   //asignar tiedas
   getTiendasPorUsuario(usuarioId: number): Observable<any[]> {
   //return this.http.get<any[]>(`${environment.API_URL}/api/UsuarioTienda/usuario/${usuarioId}`);
-  return this.http.get<any[]>(`${this.apiUrl}/api/UsuarioTienda/usuario/${usuarioId}`);
+  return this.http.get<any[]>(`${this.apiUrlUsuarioTienda}/usuario/${usuarioId}`);
 }
 
 asignarTienda(usuarioId: number, tiendaCodigo: string, rol: string, asignadoPorId: number): Observable<any> {
-  return this.http.post<any>(`${this.apiUrl}/api/UsuarioTienda/asignar`, {
+  return this.http.post<any>(`${this.apiUrlUsuarioTienda}/asignar`, {
   //return this.http.post<any>(`${environment.API_URL}/api/UsuarioTienda/asignar`, {
     usuarioId,
     tiendaCodigo,
