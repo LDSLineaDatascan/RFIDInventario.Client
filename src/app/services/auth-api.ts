@@ -120,7 +120,7 @@ export class AuthApi {
 
     //confguro la API_URL desde app-config
     const apiUrl = this.appConfigService.get<string>('API_URL', environment.API_URL);
-    const baseUrl = apiUrl || environment.API_URL;
+    const baseUrl = apiUrl;
 
     console.log("API_URL configurada en environment Config-app:", baseUrl);
 

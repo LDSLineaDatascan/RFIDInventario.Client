@@ -1,4 +1,4 @@
 {
-    "API_URL": "http://localhost:5097",
+    "API_URL": "http://172.16.4.64:80",
     "somefeatureEnable": true
 } 
