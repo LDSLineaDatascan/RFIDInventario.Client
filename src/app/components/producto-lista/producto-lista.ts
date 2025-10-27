@@ -18,6 +18,10 @@ export class ProductoLista implements OnInit {
   filtro: string = '';
   productosFiltrados: Producto[] = [];
 
+  pageSize: number = 10;
+  currentPage: number = 1;
+  Math = Math;
+
   constructor(private productoApi: ProductoApi) {}
 
   ngOnInit(): void {
@@ -40,6 +44,7 @@ export class ProductoLista implements OnInit {
   }
 
   filtrarProductos(): void {
+    this.currentPage = 1;
   const f = (this.filtro || '').toLowerCase().trim();
   if (!f) {
     this.productosFiltrados = [...this.productos];
@@ -52,5 +57,24 @@ export class ProductoLista implements OnInit {
   );
 }
 
-  
+//Paginación
+get productosPaginados(){
+  const startIndex = (this.currentPage -1) * this.pageSize;
+  return this.productosFiltrados.slice(startIndex, startIndex + this.pageSize);
+}
+
+nextPage()
+{
+  if(this.currentPage * this.pageSize < this.productosFiltrados.length){
+    this.currentPage++;
+  }
+}
+
+prevPage()
+{
+  if(this.currentPage > 1){
+    this.currentPage--;
+  }
+}
+
 }

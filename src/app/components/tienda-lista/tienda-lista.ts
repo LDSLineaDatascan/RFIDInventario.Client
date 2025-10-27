@@ -13,8 +13,13 @@ import { FormsModule } from '@angular/forms';
 export class TiendaLista implements OnInit {
   tiendas: Tienda[] = [];
   error: string | null = null;
+
   tiendasFiltradas: Tienda[]=[];
   filtro: string ="";
+
+  pageSize: number = 10;
+  currentPage: number = 1;
+  Math = Math;
 
   constructor(private tiendaApi: TiendaApi) {}
 
@@ -37,9 +42,28 @@ export class TiendaLista implements OnInit {
   }
 
   filtrarTiendas(): void{
+    this.currentPage=1;
     const texto= this.filtro.toLowerCase();
     this.tiendasFiltradas= this.tiendas.filter(
       (t) => t.nombre.toLowerCase().includes(texto) || t.codigo.toLowerCase().includes(texto)
     )
+  }
+
+  //Paginacion
+  get tiendasPaginadas(){
+    const startIndex= (this.currentPage -1) * this.pageSize;
+    return this.tiendasFiltradas.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  nextPage(){
+    if(this.currentPage < this.Math.ceil(this.tiendasFiltradas.length / this.pageSize)){
+      this.currentPage++;
+    } 
+  }
+
+  prevPage(){
+    if(this.currentPage > 1){
+      this.currentPage--;
+    } 
   }
 }

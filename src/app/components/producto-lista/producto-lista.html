@@ -26,7 +26,7 @@
 
       <!-- Tabla  -->
       <div class="table-responsive">
-        <table class="table align-middle table-hover">
+        <table class="table align-middle table-hover text-center">
           <thead class="table-light">
             <tr>
               <th>Código</th>
@@ -42,6 +42,22 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- paginación -->
+           <div class ="d-flex justify-content-between align-items-center mt-3">
+          <div class="btn btn-outline-primary btn-sm rounded-pill"
+            (click)="prevPage()">Anterior</div>
+
+            <div class="fw-semibold text-muted text-center flex-grow-1">
+              Página {{ currentPage }} de {{ Math.ceil(productosFiltrados.length / pageSize) }} |
+              {{currentPage * pageSize - pageSize + 1}} -
+              {{ Math.min(currentPage * pageSize, productosFiltrados.length) }} de
+              {{ productosFiltrados.length }} productos
+
+            </div>
+
+          <div class="btn btn-outline-primary btn-sm rounded-pill"
+            (click)="nextPage()">Siguiente</div>
       </div>
 
       <!-- Mensaje sin datos -->

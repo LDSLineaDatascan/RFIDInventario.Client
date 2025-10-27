@@ -67,7 +67,7 @@ asignarTienda(usuarioId: number, tiendaCodigo: string, rol: string, asignadoPorI
 }
 
 desasignarTienda(usuarioCorreo: string, tiendaCodigo: string): Observable<any> {
-  return this.http.delete<any>(`${this.apiUrl}/api/UsuarioTienda/correo?correoUsuario=${usuarioCorreo}&tiendaCodigo=${tiendaCodigo}`
+  return this.http.delete<any>(`${this.apiUrlUsuarioTienda}/correo?correoUsuario=${usuarioCorreo}&tiendaCodigo=${tiendaCodigo}`
   //return this.http.delete<any>(`${environment.API_URL}/api/UsuarioTienda/correo?correoUsuario=${usuarioCorreo}&tiendaCodigo=${tiendaCodigo}`
   ).pipe(
     tap(() => console.log("Desasignando tienda:", usuarioCorreo, tiendaCodigo))

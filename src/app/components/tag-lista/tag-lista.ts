@@ -17,6 +17,10 @@ export class TagLista implements OnInit {
   tagsFiltradas: TagTienda[] = [];
   filtro: string = '';
 
+  pageSize: number = 10;
+  currentPage: number = 1;
+  Math = Math;
+
   constructor(private tagApi: TagApi) {}
 
   ngOnInit(): void {
@@ -38,6 +42,7 @@ export class TagLista implements OnInit {
   }
 
   filtrarTags(): void {
+    this.currentPage = 1;
     const q = this.filtro.trim().toLowerCase();
     if (!q) {
       this.tagsFiltradas = this.tags;
@@ -49,5 +54,24 @@ export class TagLista implements OnInit {
       (t.tag || '').toLowerCase().includes(q) ||
       (t.ean || '').toLowerCase().includes(q)
     );
+  }
+
+
+  //Paginacion
+  get tagsPaginadas(){
+    const startIndex = (this.currentPage -1) * this.pageSize;
+    return this.tagsFiltradas.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  nextPage(){
+    if((this.currentPage * this.pageSize) < this.tagsFiltradas.length){
+      this.currentPage++;
+    }
+  }
+
+  prevPage(){
+    if(this.currentPage > 1){
+      this.currentPage--;
+    }
   }
 }

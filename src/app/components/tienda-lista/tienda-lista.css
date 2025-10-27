@@ -99,7 +99,7 @@
 /* --- Sin datos --- */
 .text-muted {
   color: #6c757d !important;
-  font-style: italic;
+  /*font-style: italic;*/
 }
 
 /* --- Responsive --- */

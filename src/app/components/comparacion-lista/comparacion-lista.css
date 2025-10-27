@@ -87,18 +87,20 @@
 }
 
 /* --- Estados --- */
-.coincide {
+.table tbody td.coincide {
   color: green;
   font-weight: bold;
 }
-.faltante {
+.table tbody td.faltante {
   color: red;
   font-weight: bold;
 }
-.sobrante {
+.table tbody td.sobrante {
   color: orange;
   font-weight: bold;
 }
+
+
 
 /* --- Sin datos --- */
 .text-muted {
