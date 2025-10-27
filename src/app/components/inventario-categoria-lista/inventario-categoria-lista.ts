@@ -28,6 +28,10 @@ export class InventarioCategoriasComponent implements OnInit {
 
   ultimaActualizacion = new Date();
 
+  pageSize: number = 10;
+  currentPage: number = 1;
+  Math = Math;
+
   constructor(
     private tiendaApi: TiendaApi,
     private categoriaApi: InventarioCategoriaApi,
@@ -371,4 +375,21 @@ irAComparacion(): void {
   this.router.navigate(['/comparacion'], { queryParams: { idTienda: this.idTienda } });
 }
 
+//Paginación
+get categoriasPaginadas(){
+  const startIndex = (this.currentPage -1) * this.pageSize;
+  return this.resumenFiltrado().slice(startIndex, startIndex + this.pageSize);
+}
+
+nextPage(){
+  if((this.currentPage * this.pageSize) < this.resumenFiltrado().length){
+    this.currentPage++;
+  }
+}
+
+prevPage(){
+  if(this.currentPage > 1){
+    this.currentPage--;
+  }
+}
 }

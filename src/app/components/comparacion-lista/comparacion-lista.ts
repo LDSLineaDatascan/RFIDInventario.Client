@@ -23,6 +23,10 @@ export class ComparacionLista implements OnInit {
   error: string | null = null;
   progresoLectura = 0;
 
+  pageSize: number = 10;
+  currentPage: number = 1;
+  Math = Math;
+
   constructor(private comparacionApi: ComparacionApi, private tiendaApi: TiendaApi,
       private signalRService: SignalRService, private route: ActivatedRoute,
     private router: Router, private location: Location,) {}
@@ -170,6 +174,24 @@ export class ComparacionLista implements OnInit {
   this.router.navigate(['/inventario/categorias'], {
     queryParams: { idTienda: this.idTienda }
   });
+  }
+
+  // Paginación
+  getcomparacionPaginada(){
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.comparacion.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  nextPage(){
+    if((this.currentPage * this.pageSize) < this.comparacion.length){
+      this.currentPage++;
+    }
+  }
+
+  prevPage(){
+    if(this.currentPage > 1){
+      this.currentPage--;
+    }
   }
 
 }

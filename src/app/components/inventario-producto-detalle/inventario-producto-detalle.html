@@ -73,7 +73,7 @@
       <!-- Tabla de Tags -->
       <h5 class="fw-semibold text-dark mb-3">{{ tituloTags }}</h5>
       <div class="table-responsive" *ngIf="tags.length > 0; else sinTags">
-        <table class="table align-middle table-hover">
+        <table class="table align-middle table-hover text-center">
           <thead class="table-light">
             <tr>
               <th>Tag</th>
@@ -87,8 +87,24 @@
             </tr>
           </tbody>
         </table>
-      </div>
 
+        <!-- Paginación -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <div class="btn btn-outline-primary btn-sm rounded-pill" 
+          (click)="prevPage()">
+          Anterior
+        </div>
+
+        <div class="fw-semibold text-muted text-center flex-grow-1">
+          Página {{ currentPage }} de {{ Math.ceil(tags.length / pageSize) }} |
+          {{ (currentPage - 1) * pageSize + 1 }} -
+          {{ Math.min(currentPage * pageSize, tags.length) }} de
+          {{ tags.length }} tags
+        </div>
+
+      <div class="btn btn-outline-primary btn-sm rounded-pill" (click)="nextPage()">Siguiente</div>
+    </div>
+  </div>
       <!-- Sin tags -->
       <ng-template #sinTags>
         <div class="text-center text-muted mt-3">

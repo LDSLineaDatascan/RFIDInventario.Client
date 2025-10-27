@@ -82,7 +82,7 @@
 
 /* --- Sin datos --- */
 .text-muted {
-  font-style: italic;
+ /* font-style: italic;*/
   font-size: 0.95rem;
   color: #888 !important;
 }

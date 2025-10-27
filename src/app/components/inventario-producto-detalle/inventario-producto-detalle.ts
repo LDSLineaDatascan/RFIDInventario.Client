@@ -23,6 +23,10 @@ export class InventarioProductoDetalleComponent implements OnInit {
   tags: any[] = [];
   tituloTags: string = 'Tags del producto';
 
+  pageSize: number = 10;
+  currentPage: number = 1;
+  Math = Math; 
+
 
   constructor(
     private route: ActivatedRoute,
@@ -184,6 +188,28 @@ manejarSeleccionTags(event: Event): void {
       break;
   }
 }
+
+//Paginación de tags
+get tagsPaginados(){
+  const startIndex = (this.currentPage -1) * this.pageSize;
+  return this.tags.slice(startIndex, startIndex + this.pageSize);
+}
+
+nextPage()
+{
+  if(this.currentPage * this.pageSize < this.tags.length){
+    this.currentPage++;
+  }
+}
+
+prevPage()
+{
+  if(this.currentPage >1){
+    this.currentPage--;
+  }
+}
+
+
 
 
 

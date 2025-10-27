@@ -26,6 +26,10 @@ export class InventarioCategoriaDetalleComponent implements OnInit {
   { label: this.categoria, link: ['/inventario', 'categorias', this.categoria] }
   ];
 
+  pageSize: number = 10;
+  currentPage: number = 1;
+  Math = Math;
+
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -174,6 +178,24 @@ cargarProductos(): void {
     });
 }
 
+//Paginación
+get CategoriaDetallePaginada()
+{
+  const startIndex = (this.currentPage - 1) * this.pageSize;
+  return this.productos.slice(startIndex, startIndex + this.pageSize);
+}
 
+prevPage(): void {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+  }
+}
+
+nextPage(): void {
+  const totalPages = Math.ceil(this.productos.length / this.pageSize);
+  if (this.currentPage < totalPages) {
+    this.currentPage++;
+  }
+}
 
 }

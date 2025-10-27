@@ -83,6 +83,28 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- Paginación -->
+        <div class="d-flex justify-content-end mt-3">
+          <div class="btn btn-outline-primary btn-sm rounded-pill"
+          (click)="prevPage()">
+            Anterior
+          </div>
+
+          <div class="fw-semibold text-muted text-center flex-grow-1">
+            Página {{currentPage}} de {{ Math.ceil(resumenCategorias.length / pageSize) }} |
+            {{ (currentPage - 1) * pageSize + 1 }} -
+            {{ Math.min(currentPage * pageSize, resumenCategorias.length) }} de
+            {{ resumenCategorias.length }} categorías
+          </div>
+
+          <div class="btn btn-outline-primary btn-sm rounded-pill"
+          (click)="nextPage()">
+            Siguiente
+          </div>
+        </div>
+
+
       </div>
 
       <!-- Sin datos -->
