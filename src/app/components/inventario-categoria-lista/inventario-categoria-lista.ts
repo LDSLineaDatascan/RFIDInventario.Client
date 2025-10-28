@@ -392,4 +392,14 @@ prevPage(){
     this.currentPage--;
   }
 }
+
+
+//totaltes
+getTotal(campo: keyof ResumenCategoria): number {
+  return this.resumenCategorias.reduce((acc, item) => {
+    const valor = Number(item[campo]); // forzo conversión
+    return acc + (isNaN(valor) ? 0 : valor);
+  }, 0);
+}
+
 }

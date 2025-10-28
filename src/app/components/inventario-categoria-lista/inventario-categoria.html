@@ -19,8 +19,7 @@
             id="tiendaSelect"
             class="form-select shadow-sm rounded-3 border-0 tienda-select"
             [(ngModel)]="idTienda"
-            (change)="obtenerResumen()"
-          >
+            (change)="obtenerResumen()">
             <option *ngFor="let tienda of tiendas" [value]="tienda.codigo">
               {{ tienda.nombre }}
             </option>
@@ -81,6 +80,20 @@
                 </button>
               </td>
             </tr>
+
+            <!--Fila de totaltes-->
+            <tr class="table-light fw-bold">
+              <td>Total</td>
+              <td>{{ getTotal('teorico')}}</td>
+              <td>{{ getTotal('fisico')}}</td>
+              <td>{{ getTotal('faltantes')}}</td>
+              <td>{{ getTotal('sobrantes')}}</td>
+              <td>{{ getTotal('adicionales')}}</td>
+              <td class="table-light"></td>
+              <td class="table-light"></td>
+            </tr>
+
+
           </tbody>
         </table>
 

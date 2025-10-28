@@ -198,4 +198,21 @@ nextPage(): void {
   }
 }
 
+//totales
+getTotal(campo: 'stockTeorico' | 'stockFisico' | 'faltantes' | 'sobrantes' | 'adicionales'): number {
+  return this.productos.reduce((total, p) => {
+    const stockTeorico = p.stockTeorico ?? 0;
+    const stockFisico = p.stockFisico ?? 0;
+
+    switch (campo) {
+      case 'stockTeorico': return total + stockTeorico;
+      case 'stockFisico': return total + stockFisico;
+      case 'faltantes': return total + Math.max(stockTeorico - stockFisico, 0);
+      case 'sobrantes': return total + Math.max(stockFisico - stockTeorico, 0);
+      case 'adicionales': return total + (p.adicionales ?? 0);
+      default: return total;
+    }
+  }, 0);
+}
+
 }
