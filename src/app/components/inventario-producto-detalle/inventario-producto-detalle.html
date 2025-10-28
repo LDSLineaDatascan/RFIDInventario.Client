@@ -9,8 +9,8 @@
         <h5 class="card-title mb-0 text-dark fw-semibold">
           Detalle del Producto: {{ detalle?.producto || 'N/A' }}
         </h5>
-        <span class="badge bg-info text-dark px-3 py-2 shadow-sm">
-          Tienda: {{ detalle?.tienda || 'Sin tienda' }}
+        <span class="badge bg-primary text-white px-3 py-2 shadow-sm">
+          Tienda:  {{ detalle?.tienda || 'Sin tienda' }}
         </span>
       </div>
 
@@ -46,6 +46,7 @@
               <th>Stock Físico</th>
               <th>Faltantes</th>
               <th>Sobrantes</th>
+              <th>Adicionales</th>
               <th>Progreso</th>
             </tr>
           </thead>
@@ -58,6 +59,7 @@
               <td>{{ detalle.stockFisico }}</td>
               <td>{{ detalle.faltantes }}</td>
               <td>{{ detalle.sobrantes }}</td>
+              <td>{{ detalle.adicionales }}</td>
               <td>
                 <div class="progress-container">
                   <div class="progress-bar" [style.width.%]="progresoLimitado">

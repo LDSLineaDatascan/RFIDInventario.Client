@@ -16,11 +16,17 @@
 }
 
 /* Tabla */
+
+.table thead {
+  background-color: #032f7d !important;
+}
+
 .table thead th {
+  background-color: #032f7d !important;
   font-weight: 600;
   text-transform: uppercase;
   font-size: 0.85rem;
-  color: #6c757d;
+  color: #ffffff;
 }
 
 .table tbody td {

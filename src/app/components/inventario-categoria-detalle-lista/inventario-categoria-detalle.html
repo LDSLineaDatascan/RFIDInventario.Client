@@ -9,7 +9,7 @@
         <h5 class="card-title mb-0 text-dark fw-semibold">
           Productos de la Categoría: {{ categoria }}
         </h5>
-        <span class="badge bg-info text-dark px-3 py-2 shadow-sm">
+        <span class="badge bg-primary text-white px-3 py-2 shadow-sm">
           Tienda: {{ idTienda }}
         </span>
       </div>
@@ -45,7 +45,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let p of productos" [class.table-light]="p.esAdicional">
+            <tr *ngFor="let p of productos" [class.table-white]="p.esAdicional">
               <td>{{ p.idProducto }}
                 <span *ngIf="p.esAdicional" class="badge bg-primary ms-2">
                   Adicional
