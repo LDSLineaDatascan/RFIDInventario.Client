@@ -68,7 +68,7 @@ export class InventarioCategoriaDetalleComponent implements OnInit {
     sessionStorage.setItem('categoriaSeleccionada', this.categoria);
   }
 
-  // 🔑 construir rutas como STRING, no array
+  // constryo rutas como string no array
   this.rutas = [
   { label: 'Categorías', link: ['/', 'inventario', 'categorias', this.idTienda] },
   { label: this.categoria, link: ['/', 'inventario-categoria-detalle', this.idTienda, this.categoria] }
@@ -78,7 +78,11 @@ export class InventarioCategoriaDetalleComponent implements OnInit {
 
   this.detalleApi.obtenerProductosPorCategoria(this.idTienda, this.categoria)
     .subscribe(data => {
-      this.productos = data;
+      //this.productos = data;
+      this.productos=data.map(p=> ({
+        ...p,
+        esAdicional: (p.stockTeorico?? 0)===0
+      }));
       console.log('Productos por categoría:', data);
     });
 
@@ -208,8 +212,10 @@ getTotal(campo: 'stockTeorico' | 'stockFisico' | 'faltantes' | 'sobrantes' | 'ad
       case 'stockTeorico': return total + stockTeorico;
       case 'stockFisico': return total + stockFisico;
       case 'faltantes': return total + Math.max(stockTeorico - stockFisico, 0);
-      case 'sobrantes': return total + Math.max(stockFisico - stockTeorico, 0);
-      case 'adicionales': return total + (p.adicionales ?? 0);
+      //case 'sobrantes': return total + Math.max(stockFisico - stockTeorico, 0);
+      case 'sobrantes': return total + (!p.esAdicional ? Math.max(stockFisico - stockTeorico, 0):0);
+      //case 'adicionales': return total + (p.adicionales ?? 0);
+      case 'adicionales': return total + (p.esAdicional ? stockFisico : 0);
       default: return total;
     }
   }, 0);

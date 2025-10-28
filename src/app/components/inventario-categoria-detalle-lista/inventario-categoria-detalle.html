@@ -39,19 +39,36 @@
               <th>Stock Físico</th>
               <th>Faltantes</th>
               <th>Sobrantes</th>
+              <th>Adicionales</th>
               <th>Progreso</th>
               <th>Detalle</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let p of productos">
-              <td>{{ p.idProducto }}</td>
+            <tr *ngFor="let p of productos" [class.table-light]="p.esAdicional">
+              <td>{{ p.idProducto }}
+                <span *ngIf="p.esAdicional" class="badge bg-primary ms-2">
+                  Adicional
+                </span>
+              </td>
               <td>{{ p.producto }}</td>
               <td>{{ p.categoria }}</td>
               <td>{{ p.stockTeorico }}</td>
               <td>{{ p.stockFisico }}</td>
               <td>{{ p.stockTeorico > p.stockFisico ? (p.stockTeorico - p.stockFisico) : 0 }}</td>
-              <td>{{ p.stockFisico > p.stockTeorico ? (p.stockFisico - p.stockTeorico) : 0 }}</td>
+              <!--<td>{{ p.stockFisico > p.stockTeorico ? (p.stockFisico - p.stockTeorico) : 0 }}</td>-->
+              <td>
+              <ng-container *ngIf="!p.esAdicional">
+                {{ p.stockFisico > p.stockTeorico ? (p.stockFisico - p.stockTeorico) : 0 }}
+              </ng-container>
+              <ng-container *ngIf="p.esAdicional">
+                0
+              </ng-container>
+              </td>
+              <td>
+                {{ p.esAdicional ? p.stockFisico : 0 }}
+              </td>
+              
               <td>
                 <div class="progress-container">
                   <div
@@ -77,6 +94,7 @@
               <td>{{ getTotal('stockFisico')}}</td>
               <td>{{ getTotal('faltantes')}}</td>
               <td>{{ getTotal('sobrantes')}}</td>
+              <td>{{ getTotal('adicionales')}}</td>
               <td class="table-light"></td>
               <td class="table-light"></td>
             </tr>
