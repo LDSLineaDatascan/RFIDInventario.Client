@@ -99,7 +99,10 @@
   color: orange;
   font-weight: bold;
 }
-
+.table tbody td.adicional {
+  color: #0177fc;
+  font-weight: bold;
+}
 
 
 /* --- Sin datos --- */
