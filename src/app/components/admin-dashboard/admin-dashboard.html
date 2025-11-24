@@ -29,6 +29,10 @@
           <h5 class="card-title text-primary">Usuarios</h5>
           <p class="card-text display-6 fw-bold">{{ usuarios.length }}</p>
           <p class="text-muted mb-0">Total registrados</p>
+
+          <!--<button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editarEstadoModal"
+        (click)="abrirModalEditarEstado()">Editar estado</button>-->
+
         </div>
       </div>
     </div>
@@ -241,3 +245,39 @@
   </div>
 </div>
 
+<!-- Modal Editar Estado Tienda -->
+<div class="modal fade" id="editarEstadoModal" tabindex="-1" aria-labelledby="editarEstadoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title" id="editarEstadoLabel">Editar estado de tienda</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Tienda</label>
+          <select class="form-select" [(ngModel)]="tiendaSeleccionadaCodigo" name="tiendaSeleccionada">
+            <option value="">-- Seleccione tienda --</option>
+            <option *ngFor="let t of tiendasDisponibles" [value]="t.codigo">
+              {{ t.codigo }} - {{ t.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Estado</label>
+          <select class="form-select" [(ngModel)]="nuevoEstadoTienda" name="nuevoEstado">
+            <option value="Abierto">Abierto</option>
+            <option value="Cerrar">Cerrar</option>
+            <option value="Cerrado">Cerrado</option>
+            <option value="Mantenimiento">Mantenimiento</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="guardarEstadoTienda()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

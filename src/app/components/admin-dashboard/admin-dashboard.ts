@@ -33,6 +33,11 @@ export class AdminDashboard implements OnInit {
   tiendasFiltradas: any[] = [];
   filtroTiendaCodigo: string = '';
 
+  //estadotiendas
+  tiendasDisponibles: any[] = []; 
+  tiendaSeleccionadaCodigo: string = '';
+  nuevoEstadoTienda: string = 'Abierto';
+
   constructor(
     private adminDashboardService: AdminDashboardService,
     private signalRService: SignalRService,
@@ -58,7 +63,7 @@ export class AdminDashboard implements OnInit {
       console.log("Usuario eliminado:", id)
     });
 
-    //4. Cro usuario
+    //4. Creo usuario
     this.signalRService.escucharEvento('UsuarioCreado',(usuario: any) => {
       this.usuarios.push(usuario);
       console.log("Usuario creado:", usuario)
@@ -99,6 +104,11 @@ export class AdminDashboard implements OnInit {
       console.log("Tienda desasignada (SignalR):", id);
       this.tiendasUsuario = this.tiendasUsuario.filter(t => t.id !== id);
     });
+
+    //9.estado tenda
+    this.adminDashboardService.getTiendas().subscribe(t => {
+    this.tiendasDisponibles = t;
+  });
 
   }
 
@@ -226,6 +236,35 @@ export class AdminDashboard implements OnInit {
   //u.nombre.toLowerCase().includes(filtro) 
   //u.rol.toLowerCase().includes(filtro)
   );
+}
+
+
+//Estado tiendas**
+//abrir modal edición tienda
+abrirModalEditarEstado(tiendaCodigo?: string) {
+  this.tiendaSeleccionadaCodigo = tiendaCodigo || '';
+  const tienda = this.tiendasDisponibles.find(t => t.codigo === tiendaCodigo);
+  if (tienda) this.nuevoEstadoTienda = tienda.estado || 'Abierto';
+}
+  
+// guardar estado
+guardarEstadoTienda() {
+  if (!this.tiendaSeleccionadaCodigo) { alert('Seleccione una tienda'); return; }
+
+  this.adminDashboardService.cambiarEstadoTienda(this.tiendaSeleccionadaCodigo, this.nuevoEstadoTienda)
+    .subscribe({
+      next: () => {
+        // actualizo UI local
+        const t = this.tiendasDisponibles.find(x => x.codigo === this.tiendaSeleccionadaCodigo);
+        if (t) t.estado = this.nuevoEstadoTienda;
+        // notificar por signalR para que se unan al grupo y reciban Cerrar/Reiniciar
+        alert('Estado actualizado');
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error actualizando estado');
+      }
+    });
 }
 
 }

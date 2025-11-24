@@ -18,7 +18,10 @@
           [(ngModel)]="filtro"
           (input)="filtrarTiendas()"
         />
-        <button class="btn btn-primary">
+        <button class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#editarEstadoModal" 
+            (click)="abrirModalEditarEstado()">
           <i class="bi bi-search"></i>
           Buscar
         </button>
@@ -81,3 +84,40 @@
     </div>
   </div>
 </div>
+
+
+<!-- AÑADIR Modal Editar Estado Tienda -->
+<div class="modal fade" id="editarEstadoModal" tabindex="-1" aria-labelledby="editarEstadoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title" id="editarEstadoLabel">Editar estado de tienda</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="tiendaSeleccionada">
+          <div class="mb-3">
+            <label class="form-label">Tienda</label>
+            <input class="form-control" [value]="tiendaSeleccionada.codigo + ' - ' + tiendaSeleccionada.nombre" disabled />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Estado</label>
+            <select class="form-select" [(ngModel)]="nuevoEstadoTienda" name="nuevoEstado">
+              <option value="Abierto">Abierto</option>
+              <option value="Cerrado">Cerrado</option>
+            </select>
+          </div>
+        </div>
+        <div *ngIf="!tiendaSeleccionada" class="alert alert-warning">
+          Seleccione una tienda para editar su estado.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="guardarEstadoTienda()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -15,8 +15,8 @@ export class AdminDashboardService {
   //config.json
   private apiUrl: string = '';
   private apiUrlUsuarioTienda: string = '';
+  private apiGetTiendasUrl: string = '';
   
-
   constructor(private http: HttpClient, private appConfigService: AppConfigService) {
     const baseUrl = this.appConfigService.get<string>('API_URL', this.envUrl);
     this.apiUrl= `${baseUrl}/api/usuarios`;
@@ -24,6 +24,9 @@ export class AdminDashboardService {
 
     this.apiUrlUsuarioTienda = `${baseUrl}/api/UsuarioTienda`;
     console.log("API URL UsuarioTienda con config:", this.apiUrlUsuarioTienda);
+
+    this.apiGetTiendasUrl = `${baseUrl}`;
+    console.log("API URL Tiendas con config:", this.apiGetTiendasUrl);
    }
 
   getUsuarios(): Observable<any> {
@@ -73,4 +76,17 @@ desasignarTienda(usuarioCorreo: string, tiendaCodigo: string): Observable<any> {
     tap(() => console.log("Desasignando tienda:", usuarioCorreo, tiendaCodigo))
   );
 }
+
+//estado tiendas
+getTiendas(): Observable<any[]> {
+  const url = `${this.apiGetTiendasUrl}/tiendas`; // ajusta según tu baseUrl
+  return this.http.get<any[]>(url);
+}
+
+cambiarEstadoTienda(tiendaCodigo: string, estado: string): Observable<any> {
+  const url = `${this.apiGetTiendasUrl}/tiendas/${encodeURIComponent(tiendaCodigo)}/estado`;
+  return this.http.put<any>(url, { estado });
+}
+
+
 }

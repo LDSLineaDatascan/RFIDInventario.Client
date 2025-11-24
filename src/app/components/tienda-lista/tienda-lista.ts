@@ -21,6 +21,10 @@ export class TiendaLista implements OnInit {
   currentPage: number = 1;
   Math = Math;
 
+  //propiedades estado tienda
+  tiendaSeleccionada?: Tienda | null = null;
+  nuevoEstadoTienda: string ="";
+
   constructor(private tiendaApi: TiendaApi) {}
 
   ngOnInit(): void {
@@ -66,4 +70,64 @@ export class TiendaLista implements OnInit {
       this.currentPage--;
     } 
   }
+
+  //estado tienda
+ // Reemplaza tu método por este
+abrirModalEditarEstado(tienda?: Tienda) {
+  // usar el filtrada
+  if (tienda) {
+    this.tiendaSeleccionada = tienda;
+    this.nuevoEstadoTienda = tienda.estado?.toString() ?? 'Abierto';
+    return;
+  }
+
+  //filtradas
+  const texto = (this.filtro || '').toString().trim().toLowerCase();
+
+  if (texto) {
+    //un resultado filtrado lo selecciono
+    if (this.tiendasFiltradas.length === 1) {
+      this.tiendaSeleccionada = this.tiendasFiltradas[0];
+    } else {
+      // encontrar coincidencia exacta
+      const exacta = this.tiendasFiltradas.find(t =>
+        t.codigo?.toString().toLowerCase() === texto ||
+        t.nombre?.toString().toLowerCase() === texto
+      );
+      // si no hay exacta
+      this.tiendaSeleccionada = exacta ?? this.tiendasFiltradas.find(t =>
+        t.codigo?.toString().toLowerCase().includes(texto) ||
+        t.nombre?.toString().toLowerCase().includes(texto)
+      ) ?? null;
+    }
+  } else {
+    //  escribio nada
+    this.tiendaSeleccionada = null;
+  }
+
+  //inicializo el estado
+  this.nuevoEstadoTienda = this.tiendaSeleccionada?.estado?.toString() ?? 'Abierto';
+}
+
+  
+  guardarEstadoTienda() {
+    if (!this.tiendaSeleccionada) { alert('Seleccione una tienda'); return; }
+
+    this.tiendaApi.cambiarEstadoTienda(this.tiendaSeleccionada.codigo, this.nuevoEstadoTienda)
+      .subscribe({
+        next: () => {
+          // actualizo ui local
+          const t = this.tiendas.find(x => x.codigo === this.tiendaSeleccionada!.codigo);
+          if (t) t.estado = this.nuevoEstadoTienda;
+          //muestra el nuevo estado
+          this.tiendasFiltradas = [...this.tiendas];
+          alert('Estado actualizado');
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Error actualizando estado');
+        }
+      });
+  }
+
 }

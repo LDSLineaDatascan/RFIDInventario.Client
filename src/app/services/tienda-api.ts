@@ -27,4 +27,9 @@ export class TiendaApi {
   obtenerTiendas(): Observable<Tienda[]> {
     return this.http.get<Tienda[]>(`${this.baseUrl}/tiendas`);
   }
+
+  //estado tienda
+  cambiarEstadoTienda(tiendaCodigo: string, estado: string): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/tiendas/${encodeURIComponent(tiendaCodigo)}/estado`, { estado });
+  }
 }
