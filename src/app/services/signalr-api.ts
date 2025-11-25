@@ -12,7 +12,7 @@ export class SignalRService{
     //Inventario
     public onCategoriaReinicio?: (categoria: string) => void;
     public onProductoReinicio?: (idProducto: string) => void;
-    public onActualizarDatos?: () => void;  
+    public onActualizarDatos?: (data?: any) => void; 
 
     //Usuarios (admin dashboard)
     public onUsuarioCreado?: (usuario: any) => void;
@@ -108,6 +108,12 @@ export class SignalRService{
             console.log("Tienda desasignada signalR", id);
             this.onTiendaDesasignada?.(id);
         });
+
+        //estado de tienda
+        this.hubConnection.on("EstadoTiendaActualizado", (data)=>{
+            console.log("Estado de tienda actualizado:", data);
+            this.onActualizarDatos?.();
+        })
 
     }
     

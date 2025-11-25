@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Tienda, TiendaApi } from '../../services/tienda-api';
 import { FormsModule } from '@angular/forms';
+import { SignalRService } from '../../services/signalr-api';
+
 
 @Component({
   selector: 'app-tienda-lista',
@@ -25,10 +27,20 @@ export class TiendaLista implements OnInit {
   tiendaSeleccionada?: Tienda | null = null;
   nuevoEstadoTienda: string ="";
 
-  constructor(private tiendaApi: TiendaApi) {}
+  constructor(private tiendaApi: TiendaApi,
+    private signalRService: SignalRService
+  ) {}
 
   ngOnInit(): void {
     this.obtenerTiendas();
+
+    this.signalRService.iniciarConexion();
+
+    //escucho eventos de actualizacion de tienda
+    this.signalRService.onActualizarDatos = () => {
+      console.log("Recibido evento de actualización de datos de tienda");
+      this.obtenerTiendas();
+    };
   }
 
   obtenerTiendas(): void {
@@ -128,6 +140,14 @@ abrirModalEditarEstado(tienda?: Tienda) {
           alert('Error actualizando estado');
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    try {
+      this.signalRService.cerrarConexion();
+    } catch (err) {
+      console.warn('Error cerrando conexión SignalR:', err);
+    }
   }
 
 }
