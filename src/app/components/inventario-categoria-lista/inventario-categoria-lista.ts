@@ -26,6 +26,9 @@ export class InventarioCategoriasComponent implements OnInit {
 
   progresoGeneral = 0;
 
+  estadoTienda: string = '';
+  cargandoEstado: boolean = false;
+
   ultimaActualizacion = new Date();
 
   pageSize: number = 10;
@@ -208,6 +211,9 @@ ngOnInit(): void {
 
       console.log('tienda seleccionada final:', this.idTienda);
       this.obtenerResumen();
+      // cargar estado de la tienda
+      this.obtenerEstadoTienda();
+
 
       // 3. empiezo conexión SignalR solo una vez
       this.signalRService.iniciarConexion();
@@ -401,5 +407,45 @@ getTotal(campo: keyof ResumenCategoria): number {
     return acc + (isNaN(valor) ? 0 : valor);
   }, 0);
 }
+
+//obtener estado de la tienda
+obtenerEstadoTienda(): void {
+  if (!this.idTienda) return;
+
+  this.cargandoEstado = true;
+
+  this.categoriaApi.getEstadoTienda(this.idTienda).subscribe({
+    next: (resp) => {
+      this.estadoTienda = resp.estado;
+      this.cargandoEstado = false;
+      console.log('Estado tienda:', this.estadoTienda);
+    },
+    error: () => {
+      this.cargandoEstado = false;
+      console.error('Error obteniendo estado de la tienda');
+    }
+  });
+}
+
+//cambiar estado de la tienda
+cambiarEstadoTienda(): void {
+  if (!this.idTienda) return;
+
+  const nuevo = this.estadoTienda === 'Abierto' ? 'Cerrado' : 'Abierto';
+
+  if (!confirm(`¿Desea cambiar el estado a "${nuevo}"?`)) return;
+
+  this.categoriaApi.cambiarEstadoTienda(this.idTienda, nuevo).subscribe({
+    next: () => {
+      this.estadoTienda = nuevo;
+      alert('Estado cambiado correctamente.');
+    },
+    error: (err) => {
+      console.error(err);
+      alert('Error al cambiar el estado.');
+    }
+  });
+}
+
 
 }

@@ -185,4 +185,20 @@ reiniciarInventario(idTienda: string): Observable<any> {
   return this.http.post(`${this.apiUrl}/reiniciar`, { idTienda });
 }
 
+//Estados de tiendas
+getEstadoTienda(idTienda: string): Observable<{ estado: string }> {
+  const baseUrl = this.appConfigService.get<string>('API_URL', `${environment.API_URL}`);
+  console.log("API URL Estado Tienda con config:", baseUrl);
+  return this.http.get<{ estado: string }>(`${baseUrl}/tiendas/${idTienda}/estado`);
+}
+
+// PATCH: cambiar estado (Abierto / Cerrado)
+cambiarEstadoTienda(idTienda: string, nuevoEstado: string): Observable<any> {
+  const baseUrl = this.appConfigService.get<string>('API_URL', `${environment.API_URL}`);
+  console.log("API URL Cambiar Estado Tienda con config:", baseUrl);
+  return this.http.patch(`${baseUrl}/tiendas/${idTienda}/estado`, `"${nuevoEstado}"`, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+
+}
 }
