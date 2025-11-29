@@ -42,11 +42,11 @@
                 <span
                   class="badge px-3 py-2"
                   [ngClass]="{
-                    'bg-success-subtle text-success': tienda.estado?.toLowerCase() === 'activa',
-                    'bg-secondary-subtle text-secondary': tienda.estado?.toLowerCase() !== 'activa'
+                    'bg-success-subtle text-success': tienda.estado_Conteo?.toLowerCase() === 'activa',
+                    'bg-secondary-subtle text-secondary': tienda.estado_Conteo?.toLowerCase() !== 'activa'
                   }"
                 >
-                  {{ tienda.estado || '—' }}
+                  {{ tienda.estado_Conteo || '—' }}
                 </span>
               </td>
             </tr>

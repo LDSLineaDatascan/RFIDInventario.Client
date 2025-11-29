@@ -8,7 +8,7 @@ import { AppConfigService } from "./app-config-service";
 export interface Tienda{
     codigo: string;
     nombre: string;
-    estado?: String;
+    estado_Conteo?: String;
 }
 
 @Injectable({ providedIn: 'root' })
