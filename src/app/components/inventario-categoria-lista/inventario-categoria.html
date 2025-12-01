@@ -4,11 +4,29 @@
     <div class="card-body">
       <!-- Encabezado -->
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="card-title mb-0 text-dark fw-semibold">Conteo por Categoría</h5>
-        <span class="badge bg-primary text-white px-3 py-2 shadow-sm">
-          Categorías: {{ resumenCategorias.length }}
-        </span>
-      </div>
+  <h5 class="card-title mb-0 text-dark fw-semibold">Conteo por Categoría</h5>
+
+  <div class="d-flex align-items-center gap-2">
+
+    <!-- Categorías -->
+    <span class="badge bg-primary text-white px-3 py-2 shadow-sm">
+      Categorías: {{ resumenCategorias.length }}
+    </span>
+
+    <!-- Estado de tienda -->
+    <span
+      class="badge px-3 py-2 shadow-sm"
+      [ngClass]="{
+        'bg-success': estadoTienda === 'Abierto',
+        'bg-danger': estadoTienda === 'Cerrado',
+        'bg-secondary': !estadoTienda
+      }"
+    >Conteo: 
+      {{ estadoTienda || 'Cargando...' }}
+    </span>
+  </div>
+</div>
+
 
       <!-- Selector + Botones -->
       <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
@@ -19,7 +37,8 @@
             id="tiendaSelect"
             class="form-select shadow-sm rounded-3 border-0 tienda-select"
             [(ngModel)]="idTienda"
-            (change)="obtenerResumen()">
+            (change)="obtenerResumen()"
+            (change)="onTiendaChange()">
             <option *ngFor="let tienda of tiendas" [value]="tienda.codigo">
               {{ tienda.nombre }}
             </option>
@@ -27,31 +46,13 @@
         </div>
 
         <!-- Estado Tienda  -->
-         <div class="d-flex align-items-center gap-2">
-          <span
-            class="badge px-3 py-2"
-            [ngClass]="{
-              'bg-success': estadoTienda === 'Abierto',
-              'bg-danger': estadoTienda === 'Cerrado',
-              'bg-secondary': !estadoTienda
-          }"
-          >
-          {{ estadoTienda || 'Cargando...' }}
-          </span>
-
-          <button
-            class="btn btn-sm btn-outline-secondary"
-            (click)="cambiarEstadoTienda()"
-            [disabled]="!estadoTienda || cargandoEstado"
-            >
-            Cambiar estado
-          </button>
-        </div>
+      
 
         <!-- Botones -->
         <div class="d-flex gap-2 flex-wrap justify-content-end">
           <button class="btn btn-outline-primary" (click)="irAComparacion()">Ver comparación</button>
           <button class="btn btn-outline-danger" (click)="reiniciarInventario()">Reiniciar conteo</button>
+          <button class="btn btn-outline-warning" (click)="cambiarEstadoTienda()" [disabled]="!estadoTienda || cargandoEstado">Cambiar estado</button>
           <button class="btn btn-outline-success" (click)="descargarCSV()">Descargar CSV</button>
         </div>
       </div>

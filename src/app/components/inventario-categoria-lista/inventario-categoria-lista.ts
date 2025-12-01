@@ -447,5 +447,13 @@ cambiarEstadoTienda(): void {
   });
 }
 
+onTiendaChange(): void {
+  console.log("🔄 Cambió la tienda →", this.idTienda);
+
+  this.currentPage = 1;        // opcional pero recomendado
+  this.obtenerResumen();
+  this.obtenerEstadoTienda();
+}
+
 
 }
