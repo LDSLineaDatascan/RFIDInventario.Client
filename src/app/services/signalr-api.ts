@@ -10,7 +10,7 @@ export class SignalRService{
     private conectado = false; //bandera evitar conexiones
 
     //Inventario
-    public onCategoriaReinicio?: (categoria: string) => void;
+    public onCategoriaReinicio?: (idTienda: string, categoria: string) => void;
     public onProductoReinicio?: (idProducto: string) => void;
     public onActualizarDatos?: () => void;  
 
@@ -66,9 +66,9 @@ export class SignalRService{
 
 
         /*********************************************************** */
-        this.hubConnection.on("InventarioReiniciadoPorCategoria", (categoria: string) => {
+        this.hubConnection.on("InventarioReiniciadoPorCategoria", ( idTienda: string,categoria: string) => {
             console.log("Categoría reiniciada:", categoria);
-            this.onCategoriaReinicio?.(categoria);
+            this.onCategoriaReinicio?.(idTienda, categoria);
         });
 
         this.hubConnection.on("InventarioReiniciadoPorProducto", (idProducto: string) => {

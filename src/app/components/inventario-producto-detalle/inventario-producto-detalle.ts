@@ -53,6 +53,25 @@ export class InventarioProductoDetalleComponent implements OnInit {
       if(productoReiniciado === this.idProducto) {
         console.log('El inventario del producto ha sido reiniciado desde SignalR:', productoReiniciado);
         //cambiado
+        //this.cargarDetalleProducto();
+        // 🔑 Si era adicional, el backend ya no devuelve detalle → reset local
+  if (this.detalle?.esAdicional) {
+    this.detalle = {
+      ...this.detalle,
+      stockFisico: 0,
+      faltantes: 0,
+      sobrantes: 0,
+      adicionales: 0,
+      progreso: 0
+    };
+
+    this.tags = [];
+    this.currentPage = 1;
+    this.tituloTags = 'Tags del producto';
+
+    console.log('🧹 Detalle adicional reseteado localmente');
+    return;
+  }
         this.cargarDetalleProducto();
       }
     };
