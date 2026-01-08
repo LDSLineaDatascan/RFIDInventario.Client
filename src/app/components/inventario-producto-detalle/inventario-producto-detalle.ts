@@ -121,7 +121,7 @@ export class InventarioProductoDetalleComponent implements OnInit {
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `detalle_producto_${this.idProducto}_${fechaHoraArchivo}_${this.idTienda}.csv`);
+    link.setAttribute('download', `detalle_producto_${this.idProducto}_${this.idTienda}_${fechaHoraArchivo}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

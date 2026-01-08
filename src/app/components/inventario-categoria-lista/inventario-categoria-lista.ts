@@ -270,6 +270,18 @@ ngOnInit(): void {
     return;
   }
 
+  //fecha y hora para el nombre del archivo
+  const now = new Date();
+  const pad = (n: number) => n.toString().padStart(2, '0');
+
+  const fechaHoraArchivo =
+    `${now.getFullYear()}-` +
+    `${pad(now.getMonth() + 1)}-` +
+    `${pad(now.getDate())}T` +
+    `${pad(now.getHours())}-` +
+    `${pad(now.getMinutes())}-` +
+    `${pad(now.getSeconds())}`;
+
   // encabezados
   const encabezados = ['Categoría', 'Stock Teórico', 'Stock Físico', 'Faltantes','Sobrantes', 'Adicionales','Progreso %'];
 
@@ -294,7 +306,7 @@ ngOnInit(): void {
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.setAttribute('download', 'resumen_categorias.csv');
+  link.setAttribute('download', `resumen_categorias_${this.idTienda}_${fechaHoraArchivo}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -306,7 +318,7 @@ cargarInventarioTeorico(): void {
   this.categoriaApi.cargarInventarioTeorico().subscribe({
     next: () => {
       alert('Inventario teórico cargado correctamente.');
-      this.obtenerResumen(); // refresca la tabla
+      this.obtenerResumen(); // refrescoo la tabla
     },
     error: (err) => {
       console.error(err);
@@ -314,18 +326,6 @@ cargarInventarioTeorico(): void {
     }
   });
 }
-
-/*calcularProgresoGeneral(): void {
-  const teoricoFiltrado = this.resumenCategorias.filter(item => item.teorico > 0);
-  const totalTeorico = teoricoFiltrado.reduce((sum, item) => sum + item.teorico, 0);
-  const totalFisico = teoricoFiltrado.reduce((sum, item) => sum + Math.min(item.fisico, item.teorico), 0);
-
-  if (totalTeorico === 0) {
-    this.progresoGeneral = 0;
-  } else {
-    this.progresoGeneral = Math.min(100, Math.round((totalFisico / totalTeorico) * 100));
-  }
-}*/
 
 calcularProgresoGeneral(): void {
   const teoricoFiltrado = this.resumenCategorias.filter(item => item.teorico > 0);

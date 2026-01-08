@@ -118,6 +118,18 @@ export class InventarioCategoriaDetalleComponent implements OnInit {
     return;
   }
 
+  //fecha y hora actual
+  const now = new Date();
+  const pad = (n: number) => n.toString().padStart(2, '0');
+
+  const fechaHoraArchivo =
+    `${now.getFullYear()}-` +
+    `${pad(now.getMonth() + 1)}-` +
+    `${pad(now.getDate())}T` +
+    `${pad(now.getHours())}-` +
+    `${pad(now.getMinutes())}-` +
+    `${pad(now.getSeconds())}`;
+
   const encabezados = ['Código', 'Nombre', 'Categoría', 'Stock Teórico', 'Stock Físico', 'Faltantes', 'Sobrantes', 'Progreso'];
   const filas = this.productos.map(p => {
     const faltantes = Math.max((p.stockTeorico ?? 0) - (p.stockFisico ?? 0), 0);
@@ -146,7 +158,7 @@ export class InventarioCategoriaDetalleComponent implements OnInit {
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.setAttribute('download', `detalle_categoria_${this.categoria}.csv`);
+  link.setAttribute('download', `detalle_categoria_${this.categoria}_${this.idTienda}_${fechaHoraArchivo}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
