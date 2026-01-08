@@ -150,7 +150,7 @@ export class ComparacionLista implements OnInit {
     }
   }
 
-  descargarArchivoPlano(): void {
+ /* descargarArchivoPlano(): void {
     if (this.comparacion.length === 0) return;
 
     let contenido = 'ID Producto;Producto;Categoría;Stock Teórico;Stock Físico;Diferencia;Estado\n';
@@ -163,7 +163,56 @@ export class ComparacionLista implements OnInit {
     link.href = window.URL.createObjectURL(blob);
     link.download = `comparacion_${this.idTienda}.txt`;
     link.click();
-  }
+  }*/
+ descargarArchivoPlano(): void {
+  if (this.comparacion.length === 0) return;
+
+  const encabezados = [
+    'ID Producto',
+    'Producto',
+    'Categoría',
+    'Stock Teórico',
+    'Stock Físico',
+    'Diferencia',
+    'Estado'
+  ];
+
+  const filas = this.comparacion.map(item => [
+    item.idProducto,
+    item.nombre,
+    item.categoria,
+    item.stockTeorico,
+    item.stockFisico,
+    item.diferencia,
+    item.estado
+  ]);
+
+  const csvContent = [
+    encabezados,
+    ...filas
+  ].map(fila => fila.join(',')).join('\n');
+
+  // fecha y hora local (Colombia)
+  const now = new Date();
+  const pad = (n: number) => n.toString().padStart(2, '0');
+
+  const fechaHoraArchivo =
+    `${now.getFullYear()}-` +
+    `${pad(now.getMonth() + 1)}-` +
+    `${pad(now.getDate())}T` +
+    `${pad(now.getHours())}-` +
+    `${pad(now.getMinutes())}-` +
+    `${pad(now.getSeconds())}`;
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = window.URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `comparacion_${this.idTienda}_${fechaHoraArchivo}.csv`;
+  link.click();
+}
+
 
  volver(): void {
     if (!this.idTienda) {
