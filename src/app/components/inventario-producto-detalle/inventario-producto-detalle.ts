@@ -92,6 +92,17 @@ export class InventarioProductoDetalleComponent implements OnInit {
       return;
     }
 
+    const now = new Date();
+    const pad = (n: number) => n.toString().padStart(2, '0');
+
+    const fechaHoraArchivo =
+      `${now.getFullYear()}-` +
+      `${pad(now.getMonth() + 1)}-` +
+      `${pad(now.getDate())}T` +
+      `${pad(now.getHours())}-` +
+      `${pad(now.getMinutes())}-` +
+      `${pad(now.getSeconds())}`;
+
     const encabezados = ['Código', 'Nombre', 'Categoría', 'Stock Teórico', 'Stock Físico', 'Faltantes', 'Sobrantes', 'Progreso (%)'];
     const fila = [
       this.detalle.idProducto,
@@ -110,7 +121,7 @@ export class InventarioProductoDetalleComponent implements OnInit {
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `detalle_producto_${this.idProducto}.csv`);
+    link.setAttribute('download', `detalle_producto_${this.idProducto}_${fechaHoraArchivo}_${this.idTienda}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
