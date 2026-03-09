@@ -4,7 +4,7 @@
     <img src="assets/LOGORFIDinventory.png" alt="Logo" width="200" />
   </div>
 
-  <div class="menu-links">
+  <div class="menu-links" *ngIf="loggedIn">
 
     <!-- Inicio siempre -->
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
