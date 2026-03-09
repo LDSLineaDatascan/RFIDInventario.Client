@@ -1,17 +1,42 @@
 <nav class="navbar">
-  <!-- Opciones del menú al extremo izquierdo -->
+
   <div class="logo">
     <img src="assets/LOGORFIDinventory.png" alt="Logo" width="200" />
   </div>
 
-  <!-- Logo al extremo derecho -->
-  
-
   <div class="menu-links">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
-    <a routerLink="/tiendas" routerLinkActive="active">Tiendas</a>
-    <a routerLink="/productos" routerLinkActive="active">Productos</a>
-    <a routerLink="/tags" routerLinkActive="active">Tags</a>
-    <a routerLink="/inventario/categorias" routerLinkActive="active">Conteo</a>
+
+    <!-- Inicio siempre -->
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Inicio
+    </a>
+
+    <!-- ADMIN -->
+    <a *ngIf="loggedIn && isAdmin"
+       routerLink="/tiendas"
+       routerLinkActive="active">
+       Tiendas
+    </a>
+
+    <a *ngIf="loggedIn && isAdmin"
+       routerLink="/productos"
+       routerLinkActive="active">
+       Productos
+    </a>
+
+    <a *ngIf="loggedIn && isAdmin"
+       routerLink="/tags"
+       routerLinkActive="active">
+       Tags
+    </a>
+
+    <!-- ADMIN y USER -->
+    <a *ngIf="loggedIn && (isAdmin || isUser)"
+       routerLink="/inventario/categorias"
+       routerLinkActive="active">
+       Conteo
+    </a>
+
   </div>
+
 </nav>
