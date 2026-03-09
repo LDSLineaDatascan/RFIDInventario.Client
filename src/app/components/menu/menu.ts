@@ -32,4 +32,8 @@ export class MenuComponent {
   get isUser(): boolean {
     return this.rol === 'User';
   }
+
+  get tiendaSeleccionada(): string | null {
+  return localStorage.getItem("tiendaSeleccionada");
+}
 }

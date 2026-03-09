@@ -31,10 +31,10 @@
     </a>
 
     <!-- ADMIN y USER -->
-    <a *ngIf="loggedIn && (isAdmin || isUser)"
-       routerLink="/inventario/categorias"
-       routerLinkActive="active">
-       Conteo
+    <a *ngIf="isAdmin || isUser"
+      [routerLink]="['/inventario/categorias', tiendaSeleccionada]"
+      routerLinkActive="active">
+      Conteo
     </a>
 
   </div>

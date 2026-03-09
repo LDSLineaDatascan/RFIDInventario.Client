@@ -205,6 +205,8 @@ ngOnInit(): void {
 
     if (this.tiendas.length > 0) {
       // Si no recibo por url, uso la primera tienda por defecto
+      const tiendaGuardada = localStorage.getItem("tiendaSeleccionada");
+
       if (!this.idTienda) {
         this.idTienda = this.tiendas[0].codigo;
       }
@@ -450,7 +452,12 @@ cambiarEstadoTienda(): void {
 onTiendaChange(): void {
   console.log("🔄 Cambió la tienda →", this.idTienda);
 
-  this.currentPage = 1;        // opcional pero recomendado
+
+  //agrego navegación a comparación para mantener idTienda en la url
+  localStorage.setItem("tiendaSeleccionada", this.idTienda);
+  this.router.navigate(['/inventario/categorias', this.idTienda]);
+  
+  this.currentPage = 1;        
   this.obtenerResumen();
   this.obtenerEstadoTienda();
 }
